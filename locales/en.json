@@ -71,5 +71,20 @@
   "login_success": "Login successful!",
   "login_failed": "Invalid username or password.",
   "login_error": "Unable to connect to the server. Please try again.",
-  "ok": "OK"
+  "ok": "OK",
+  "roll_no": "Roll No:",
+  "class_label": "Class:",
+  "shift_label": "Shift:",
+  "student_details": "Student Details",
+  "academic_info": "Academic Information",
+  "personal_info": "Personal Information",
+  "pin": "PIN:",
+  "section": "Section:",
+  "group": "Group:",
+  "session": "Session:",
+  "branch": "Branch:",
+  "father_name": "Father's Name:",
+  "mother_name": "Mother's Name:",
+  "contact_no": "Contact No:",
+  "joining_date": "Joining Date:"
 }

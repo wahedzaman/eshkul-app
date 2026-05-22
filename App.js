@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SplashScreen from './screens/SplashScreen';
 import LoginScreen from './screens/LoginScreen';
 import AppContainerScreen from './screens/AppContainerScreen';
+import StudentDetailsScreen from './screens/StudentDetailsScreen';
 import "./global.css";
 import "./i18n"; // Import i18n config
 
@@ -16,6 +17,7 @@ export default function App() {
         <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="AppContainer" component={AppContainerScreen} />
+        <Stack.Screen name="StudentDetails" component={StudentDetailsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

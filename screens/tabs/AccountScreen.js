@@ -2,9 +2,11 @@ import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
+import AppSession from '../../services/AppSession';
+import ApiWrapper from '../../constants/ApiWrapper';
 
 const MenuItem = ({ icon, label, onPress, isLast, rightElement }) => (
-  <TouchableOpacity 
+  <TouchableOpacity
     onPress={onPress}
     className="flex-row items-center py-4"
   >
@@ -38,28 +40,66 @@ const MenuGroup = ({ title, children, showNewBadge }) => (
   </View>
 );
 
-const ProfileHeader = () => (
-  <View className="bg-white rounded-3xl p-4 mb-6 shadow-sm mx-4 flex-row items-center">
-    <Image 
-      source={{ uri: 'https://randomuser.me/api/portraits/men/32.jpg' }} 
-      className="w-14 h-14 rounded-full mr-4"
-    />
-    <View className="flex-1">
-      <Text className="text-[#0f172a] font-bold text-lg">Abir Hossain</Text>
-      <Text className="text-gray-500 text-sm">GRN No: S2526002</Text>
-      <Text className="text-gray-500 text-sm">Class : Play CC</Text>
-    </View>
-    <Ionicons name="chevron-forward" size={24} color="#9ca3af" />
-  </View>
-);
+const ProfileHeader = ({ onPress }) => {
+  const { t } = useTranslation();
+  const student = AppSession.student;
 
-export default function AccountScreen() {
+  const avatarUri = student?.smallImageUrl
+    ? (student.smallImageUrl.startsWith('http') ? student.smallImageUrl : `${ApiWrapper.BASE_URL}/${student.smallImageUrl}`)
+    : (AppSession.userSmallImage
+      ? (AppSession.userSmallImage.startsWith('http') ? AppSession.userSmallImage : `${ApiWrapper.BASE_URL}/${AppSession.userSmallImage}`)
+      : null);
+
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      disabled={!student}
+      activeOpacity={0.7}
+      className="bg-white rounded-3xl p-4 mb-6 shadow-sm mx-4 flex-row items-center"
+    >
+      {avatarUri ? (
+        <Image
+          source={{ uri: avatarUri }}
+          className="w-14 h-14 rounded-full mr-4"
+        />
+      ) : (
+        <Ionicons
+          name="person-circle-outline"
+          size={56}
+          color="#9ca3af"
+          className="mr-4"
+        />
+      )}
+      <View className="flex-1">
+        <Text className="text-[#0f172a] font-bold text-lg">
+          {student?.name || AppSession.userName || ''}
+        </Text>
+        {student ? (
+          <>
+            <Text className="text-gray-500 text-sm">
+              {t('roll_no')} {student.currentRollNo}
+            </Text>
+            <Text className="text-gray-500 text-sm">
+              {t('class_label')} {student.academicClass}
+            </Text>
+            <Text className="text-gray-500 text-sm">
+              {t('shift_label')} {student.academicShift}
+            </Text>
+          </>
+        ) : null}
+      </View>
+      <Ionicons name="chevron-forward" size={24} color="#9ca3af" />
+    </TouchableOpacity>
+  );
+};
+
+export default function AccountScreen({ navigation }) {
   const { t } = useTranslation();
 
   return (
     <ScrollView className="flex-1 bg-gray-50 pt-4">
       {/* Profile Header */}
-      <ProfileHeader />
+      <ProfileHeader onPress={() => navigation.navigate('StudentDetails')} />
 
       {/* General Section (No Title) */}
       <MenuGroup>
@@ -70,9 +110,9 @@ export default function AccountScreen() {
 
       {/* Account Management */}
       <MenuGroup title={t('account_management')} >
-        <MenuItem 
-          icon="people-outline" 
-          label={t('account_switching')} 
+        <MenuItem
+          icon="people-outline"
+          label={t('account_switching')}
           rightElement={
             <View className="flex-row items-center">
               <Ionicons name="chevron-forward" size={20} color="#9ca3af" />

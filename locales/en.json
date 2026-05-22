@@ -64,5 +64,12 @@
   "search_faq": "Search FAQ",
   "contact_support": "Contact Support",
   "app_updates": "App Updates",
-  "app_section": "App"
+  "app_section": "App",
+  "success": "Success",
+  "failed": "Failed",
+  "error": "Error",
+  "login_success": "Login successful!",
+  "login_failed": "Invalid username or password.",
+  "login_error": "Unable to connect to the server. Please try again.",
+  "ok": "OK"
 }

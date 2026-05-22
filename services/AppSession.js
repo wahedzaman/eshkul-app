@@ -1,5 +1,6 @@
 import StorageManager from './StorageManager';
 import Strings from '../constants/Strings';
+import Student from '../models/Student';
 
 class AppSession {
   constructor() {
@@ -13,6 +14,7 @@ class AppSession {
     this.userType = null;
     this.id = null;
     this.siblings = [];
+    this.student = null; // Holds instantiated Student model (nullable)
 
     AppSession.instance = this;
   }
@@ -34,11 +36,23 @@ class AppSession {
     }
   }
 
+  setStudent(student) {
+    this.student = student;
+  }
+
   async loadSession() {
     try {
       const data = await StorageManager.getItem(Strings.STORAGE_KEYS.USER_SESSION);
       if (data) {
         this.setSession(data);
+        
+        // Load persistent student details if profile exists
+        if (data.UserType === 11) {
+          const studentData = await StorageManager.getItem(Strings.STORAGE_KEYS.STUDENT_DETAILS);
+          if (studentData && studentData.Student) {
+            this.student = new Student(studentData.Student);
+          }
+        }
         return true;
       }
     } catch (error) {
@@ -55,8 +69,10 @@ class AppSession {
     this.userType = null;
     this.id = null;
     this.siblings = [];
+    this.student = null;
     try {
       await StorageManager.removeItem(Strings.STORAGE_KEYS.USER_SESSION);
+      await StorageManager.removeItem(Strings.STORAGE_KEYS.STUDENT_DETAILS);
     } catch (error) {
       console.error('AppSession clearSession Error:', error);
     }

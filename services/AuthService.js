@@ -3,6 +3,7 @@ import ApiWrapper from '../constants/ApiWrapper';
 import Strings from '../constants/Strings';
 import AppSession from './AppSession';
 import StorageManager from './StorageManager';
+import StudentService from './StudentService';
 
 class AuthService {
   static async login(username, password) {
@@ -28,6 +29,16 @@ class AuthService {
 
     // Persist session to storage
     await StorageManager.setItem(Strings.STORAGE_KEYS.USER_SESSION, response.data);
+
+    // If student, fetch and persist details immediately during login
+    if (response.data.UserType === 11) {
+      const studentRes = await StudentService.fetchAndPersistDetails(response.data.Id, response.data.Token);
+      if (!studentRes.success) {
+        // Purge session data if profile fails to resolve
+        await AppSession.clearSession();
+        return { success: false, type: 'failed', error: 'student_details_failed' };
+      }
+    }
 
     return { success: true, data: response.data };
   }

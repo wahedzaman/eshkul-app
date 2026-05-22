@@ -4,5 +4,6 @@ export default {
   ENDPOINTS: {
     LOGIN: '/api/auth/Login',
     STUDENT_DETAILS: '/api/student/details',
+    NOTIFICATIONS: '/api/Notification/DetailsByUserId',
   },
 };

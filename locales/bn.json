@@ -52,5 +52,19 @@
   "logout": "লগ আউট",
   "confirm_logout_title": "লগ আউট",
   "confirm_logout_desc": "আপনি কি নিশ্চিত যে আপনি লগ আউট করতে চান?",
-  "cancel": "বাতিল"
+  "cancel": "বাতিল",
+  "no_notifications": "কোনো নোটিফিকেশন পাওয়া যায়নি",
+  "just_now": "এইমাত্র",
+  "minute_ago": "১ মিনিট আগে",
+  "minutes_ago": "মিনিট আগে",
+  "hour_ago": "১ ঘণ্টা আগে",
+  "hours_ago": "ঘণ্টা আগে",
+  "day_ago": "১ দিন আগে",
+  "days_ago": "দিন আগে",
+  "week_ago": "১ সপ্তাহ আগে",
+  "weeks_ago": "সপ্তাহ আগে",
+  "month_ago": "১ মাস আগে",
+  "months_ago": "মাস আগে",
+  "year_ago": "১ বছর আগে",
+  "years_ago": "বছর আগে"
 }

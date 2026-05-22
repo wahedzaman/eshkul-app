@@ -48,5 +48,9 @@
   "father_name": "পিতার নাম:",
   "mother_name": "মাতার নাম:",
   "contact_no": "যোগাযোগ নম্বর:",
-  "joining_date": "যোগদানের তারিখ:"
+  "joining_date": "যোগদানের তারিখ:",
+  "logout": "লগ আউট",
+  "confirm_logout_title": "লগ আউট",
+  "confirm_logout_desc": "আপনি কি নিশ্চিত যে আপনি লগ আউট করতে চান?",
+  "cancel": "বাতিল"
 }

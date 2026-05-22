@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, ScrollView, TouchableOpacity, Image, Modal } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
 import AppSession from '../../services/AppSession';
@@ -95,45 +95,110 @@ const ProfileHeader = ({ onPress }) => {
 
 export default function AccountScreen({ navigation }) {
   const { t } = useTranslation();
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const handleConfirmLogout = async () => {
+    setIsModalVisible(false);
+    await AppSession.clearSession();
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Login' }],
+    });
+  };
 
   return (
-    <ScrollView className="flex-1 bg-gray-50 pt-4">
-      {/* Profile Header */}
-      <ProfileHeader onPress={() => navigation.navigate('StudentDetails')} />
+    <View className="flex-1 bg-gray-50">
+      <ScrollView className="flex-1 pt-4">
+        {/* Profile Header */}
+        <ProfileHeader onPress={() => navigation.navigate('StudentDetails')} />
 
-      {/* General Section (No Title) */}
-      <MenuGroup>
-        <MenuItem icon="person-circle-outline" label={t('account')} />
-        <View className="h-[1px] bg-gray-100" />
-        <MenuItem icon="color-wand-outline" label={t('customization')} />
-      </MenuGroup>
+        {/* General Section (No Title) */}
+        <MenuGroup>
+          <MenuItem icon="person-circle-outline" label={t('account')} />
+          <View className="h-[1px] bg-gray-100" />
+          <MenuItem icon="color-wand-outline" label={t('customization')} />
+        </MenuGroup>
 
-      {/* Account Management */}
-      <MenuGroup title={t('account_management')} >
-        <MenuItem
-          icon="people-outline"
-          label={t('account_switching')}
-          rightElement={
-            <View className="flex-row items-center">
-              <Ionicons name="chevron-forward" size={20} color="#9ca3af" />
+        {/* Account Management */}
+        <MenuGroup title={t('account_management')} >
+          <MenuItem
+            icon="people-outline"
+            label={t('account_switching')}
+            rightElement={
+              <View className="flex-row items-center">
+                <Ionicons name="chevron-forward" size={20} color="#9ca3af" />
+              </View>
+            }
+          />
+        </MenuGroup>
+
+        {/* Support & FAQs */}
+        <MenuGroup title={t('support_faqs')}>
+          <MenuItem icon="help-circle-outline" label={t('search_faq')} />
+          <View className="h-[1px] bg-gray-100" />
+          <MenuItem icon="chatbubble-ellipses-outline" label={t('contact_support')} isLast />
+        </MenuGroup>
+
+        {/* App */}
+        <MenuGroup title={t('app_section')}>
+          <MenuItem icon="apps-outline" label={t('app_updates')} isLast />
+        </MenuGroup>
+
+        <TouchableOpacity
+          onPress={() => setIsModalVisible(true)}
+          className="mx-4 mt-2 mb-8 bg-red-50 py-4 rounded-3xl border border-red-100 items-center justify-center flex-row"
+        >
+          <Ionicons name="log-out-outline" size={20} color="#ef4444" className="mr-2" />
+          <Text className="text-red-500 font-bold text-base">{t('logout')}</Text>
+        </TouchableOpacity>
+
+        <View className="h-20" />
+      </ScrollView>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isModalVisible}
+        onRequestClose={() => setIsModalVisible(false)}
+      >
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => setIsModalVisible(false)}
+          className="flex-1 bg-black/50 justify-end"
+        >
+          <TouchableOpacity
+            activeOpacity={1}
+            className="bg-white rounded-t-3xl p-6"
+          >
+            <Text className="text-[#0f172a] font-bold text-lg text-center mb-2">
+              {t('confirm_logout_title')}
+            </Text>
+            
+            <Text className="text-gray-500 text-sm text-center mb-6">
+              {t('confirm_logout_desc')}
+            </Text>
+
+            <View className="flex-row">
+              <TouchableOpacity
+                onPress={() => setIsModalVisible(false)}
+                className="flex-1 bg-gray-100 py-3.5 rounded-2xl items-center mr-2"
+              >
+                <Text className="text-gray-700 font-bold text-base">
+                  {t('cancel')}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={handleConfirmLogout}
+                className="flex-1 bg-red-500 py-3.5 rounded-2xl items-center ml-2"
+              >
+                <Text className="text-white font-bold text-base">
+                  {t('logout')}
+                </Text>
+              </TouchableOpacity>
             </View>
-          }
-        />
-      </MenuGroup>
-
-      {/* Support & FAQs */}
-      <MenuGroup title={t('support_faqs')}>
-        <MenuItem icon="help-circle-outline" label={t('search_faq')} />
-        <View className="h-[1px] bg-gray-100" />
-        <MenuItem icon="chatbubble-ellipses-outline" label={t('contact_support')} isLast />
-      </MenuGroup>
-
-      {/* App */}
-      <MenuGroup title={t('app_section')}>
-        <MenuItem icon="apps-outline" label={t('app_updates')} isLast />
-      </MenuGroup>
-
-      <View className="h-20" />
-    </ScrollView>
+          </TouchableOpacity>
+        </TouchableOpacity>
+      </Modal>
+    </View>
   );
 }

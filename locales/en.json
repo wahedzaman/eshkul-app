@@ -86,5 +86,9 @@
   "father_name": "Father's Name:",
   "mother_name": "Mother's Name:",
   "contact_no": "Contact No:",
-  "joining_date": "Joining Date:"
+  "joining_date": "Joining Date:",
+  "logout": "Log Out",
+  "confirm_logout_title": "Log Out",
+  "confirm_logout_desc": "Are you sure you want to log out?",
+  "cancel": "Cancel"
 }

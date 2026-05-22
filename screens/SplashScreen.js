@@ -1,22 +1,54 @@
 import React, { useEffect } from 'react';
-import { View, Text } from 'react-native';
-import { useTranslation } from 'react-i18next';
-import AppConfig from '../constants/AppConfig';
+import { View, Image, ActivityIndicator, StyleSheet } from 'react-native';
+import SplashService from '../services/SplashService';
+import Colors from '../constants/Colors';
 
 export default function SplashScreen({ navigation }) {
-  const { t } = useTranslation();
-
   useEffect(() => {
-    const timer = setTimeout(() => {
-      navigation.replace('Login');
-    }, 1500);
+    const initApp = async () => {
+      const hasSession = await SplashService.checkSession();
+      // Keep splash active for at least 1.5 seconds to preserve aesthetic pacing
+      setTimeout(() => {
+        if (hasSession) {
+          navigation.replace('AppContainer');
+        } else {
+          navigation.replace('Login');
+        }
+      }, 1500);
+    };
 
-    return () => clearTimeout(timer);
+    initApp();
   }, [navigation]);
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'white' }}>
-      <Text style={{ fontSize: 24, fontWeight: 'bold', color: '#2563eb' }}>{AppConfig.appName}</Text>
+    <View style={styles.container}>
+      <Image
+        source={require('../assets/logo.png')}
+        style={styles.logo}
+        resizeMode="contain"
+      />
+      <ActivityIndicator
+        size="large"
+        color={Colors.primary || '#0f5279'}
+        style={styles.loader}
+      />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#ffffff',
+  },
+  logo: {
+    width: 200,
+    height: 120,
+    marginBottom: 30,
+  },
+  loader: {
+    marginTop: 20,
+  },
+});

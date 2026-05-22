@@ -2,6 +2,7 @@ import NetworkManager from './NetworkManager';
 import ApiWrapper from '../constants/ApiWrapper';
 import Strings from '../constants/Strings';
 import AppSession from './AppSession';
+import StorageManager from './StorageManager';
 
 class AuthService {
   static async login(username, password) {
@@ -24,6 +25,9 @@ class AuthService {
 
     // Populate singleton AppSession
     AppSession.setSession(response.data);
+
+    // Persist session to storage
+    await StorageManager.setItem(Strings.STORAGE_KEYS.USER_SESSION, response.data);
 
     return { success: true, data: response.data };
   }

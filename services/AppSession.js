@@ -1,3 +1,6 @@
+import StorageManager from './StorageManager';
+import Strings from '../constants/Strings';
+
 class AppSession {
   constructor() {
     if (AppSession.instance) {
@@ -31,7 +34,20 @@ class AppSession {
     }
   }
 
-  clearSession() {
+  async loadSession() {
+    try {
+      const data = await StorageManager.getItem(Strings.STORAGE_KEYS.USER_SESSION);
+      if (data) {
+        this.setSession(data);
+        return true;
+      }
+    } catch (error) {
+      console.error('AppSession loadSession Error:', error);
+    }
+    return false;
+  }
+
+  async clearSession() {
     this.token = null;
     this.rights = [];
     this.userName = '';
@@ -39,6 +55,11 @@ class AppSession {
     this.userType = null;
     this.id = null;
     this.siblings = [];
+    try {
+      await StorageManager.removeItem(Strings.STORAGE_KEYS.USER_SESSION);
+    } catch (error) {
+      console.error('AppSession clearSession Error:', error);
+    }
   }
 
   isAuthenticated() {

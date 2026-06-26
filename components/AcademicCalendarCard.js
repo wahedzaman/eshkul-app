@@ -1,7 +1,35 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, Text, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
+import AcademicCalendarService from '../services/AcademicCalendarService';
+
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+function categorizeEvent(item) {
+  if (item.isInstituteClose) return 'holiday';
+  const text = (item.title + ' ' + item.description).toLowerCase();
+  if (text.includes('exam')) return 'upcoming_exam';
+  return 'events';
+}
+
+function formatDate(isoString) {
+  const date = new Date(isoString);
+  const day = DAY_NAMES[date.getDay()];
+  const dateNum = String(date.getDate()).padStart(2, '0');
+  return { day, date: dateNum };
+}
+
+function getCurrentMonth(events) {
+  if (events.length > 0) {
+    const firstEvent = events[0];
+    const date = new Date(firstEvent.fromDate);
+    return MONTHS[date.getMonth()];
+  }
+  const now = new Date();
+  return MONTHS[now.getMonth()];
+}
 
 const FilterChip = ({ label, isActive, onPress }) => (
   <TouchableOpacity 
@@ -33,25 +61,35 @@ const EventItem = ({ day, date, title, description }) => (
 export default function AcademicCalendarCard() {
   const { t } = useTranslation();
   const [activeFilter, setActiveFilter] = useState('all');
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const events = [
-    {
-      id: 1,
-      day: 'Sun',
-      date: '01',
-      title: 'Annual Sports',
-      description: 'Lorem Ipsum" is standard placeholder text used mainly in design.',
-      type: 'events'
-    },
-    {
-      id: 2,
-      day: 'Thu',
-      date: '23',
-      title: 'Final Exam',
-      description: 'Lorem Ipsum" is standard placeholder text used mainly in design.',
-      type: 'upcoming_exam'
+  const fetchEvents = useCallback(async () => {
+    setLoading(true);
+    const result = await AcademicCalendarService.fetchCalendarEvents();
+    if (result.success) {
+      setEvents(result.data);
+    } else {
+      setEvents([]);
     }
-  ];
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    fetchEvents();
+  }, [fetchEvents]);
+
+  const categorizedEvents = events.map(item => ({
+    ...item,
+    _type: categorizeEvent(item),
+    _formattedDate: formatDate(item.fromDate),
+  }));
+
+  const filteredEvents = activeFilter === 'all'
+    ? categorizedEvents
+    : categorizedEvents.filter(item => item._type === activeFilter);
+
+  const currentMonth = getCurrentMonth(events);
 
   return (
     <View className="bg-white rounded-[32px] p-6 mb-6 shadow-sm">
@@ -60,7 +98,7 @@ export default function AcademicCalendarCard() {
         <Text className="text-xl font-bold text-[#0f172a]">{t('academic_calendar')}</Text>
         <TouchableOpacity className="flex-row items-center">
           <Ionicons name="calendar-outline" size={18} color="#2563eb" className="mr-1" />
-          <Text className="text-blue-600 font-bold">November</Text>
+          <Text className="text-blue-600 font-bold">{currentMonth}</Text>
         </TouchableOpacity>
       </View>
 
@@ -90,12 +128,21 @@ export default function AcademicCalendarCard() {
 
       {/* Events List */}
       <View>
-        {events.map((item) => (
-          <EventItem 
-            key={item.id}
-            {...item}
-          />
-        ))}
+        {loading ? (
+          <ActivityIndicator size="large" color="#2563eb" className="py-8" />
+        ) : filteredEvents.length === 0 ? (
+          <Text className="text-gray-500 text-center py-8">{t('no_notifications')}</Text>
+        ) : (
+          filteredEvents.map((item) => (
+            <EventItem 
+              key={item.id}
+              day={item._formattedDate.day}
+              date={item._formattedDate.date}
+              title={item.title}
+              description={item.description}
+            />
+          ))
+        )}
       </View>
     </View>
   );

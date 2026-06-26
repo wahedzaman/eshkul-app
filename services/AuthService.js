@@ -31,7 +31,7 @@ class AuthService {
     await StorageManager.setItem(Strings.STORAGE_KEYS.USER_SESSION, response.data);
 
     // If student, fetch and persist details immediately during login
-    if (response.data.UserType === 11) {
+    if (response.data.UserType === Strings.USER_TYPES.STUDENT) {
       const studentRes = await StudentService.fetchAndPersistDetails(response.data.Id, response.data.Token);
       if (!studentRes.success) {
         // Purge session data if profile fails to resolve

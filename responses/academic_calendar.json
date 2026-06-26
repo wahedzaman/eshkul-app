@@ -1,0 +1,226 @@
+[
+    {
+        "Id": 162,
+        "InstituteId": 95,
+        "AcademicBranchId": 50,
+        "AcademicSessionId": 20250028,
+        "FromDate": "2025-08-26T00:00:00",
+        "ToDate": "2025-08-26T00:00:00",
+        "Title": "Janmashtami",
+        "Description": "Janmashtami",
+        "IsInstituteClose": true
+    },
+    {
+        "Id": 163,
+        "InstituteId": 95,
+        "AcademicBranchId": 50,
+        "AcademicSessionId": 20250028,
+        "FromDate": "2025-07-28T00:00:00",
+        "ToDate": "2025-07-28T00:00:00",
+        "Title": "School Year 2024 / 2025 begins",
+        "Description": "School Year 2024 / 2025 begins"
+    },
+    {
+        "Id": 164,
+        "InstituteId": 95,
+        "AcademicBranchId": 50,
+        "AcademicSessionId": 202600021,
+        "FromDate": "2025-07-27T00:00:00",
+        "ToDate": "2025-07-27T00:00:00",
+        "Title": "School Year 2025 / 2026 began",
+        "Description": "Sunday, 27th July, 2025"
+    },
+    {
+        "Id": 165,
+        "InstituteId": 95,
+        "AcademicBranchId": 50,
+        "AcademicSessionId": 202600021,
+        "FromDate": "2025-08-05T00:00:00",
+        "ToDate": "2025-08-05T00:00:00",
+        "Title": "July Mass Uprising Day",
+        "Description": "Tuesday, 5th August, 2025",
+        "IsInstituteClose": true
+    },
+    {
+        "Id": 166,
+        "InstituteId": 95,
+        "AcademicBranchId": 50,
+        "AcademicSessionId": 202600021,
+        "FromDate": "2025-08-16T00:00:00",
+        "ToDate": "2025-08-16T00:00:00",
+        "Title": "Janmashtami",
+        "Description": "Saturday, 16th August, 2025",
+        "IsInstituteClose": true
+    },
+    {
+        "Id": 167,
+        "InstituteId": 95,
+        "AcademicBranchId": 50,
+        "AcademicSessionId": 202600021,
+        "FromDate": "2025-09-05T00:00:00",
+        "ToDate": "2025-09-05T00:00:00",
+        "Title": "Eid-e-Miladun Nabi",
+        "Description": "Friday, 5th September, 2025",
+        "IsInstituteClose": true
+    },
+    {
+        "Id": 168,
+        "InstituteId": 95,
+        "AcademicBranchId": 50,
+        "AcademicSessionId": 202600021,
+        "FromDate": "2025-09-28T00:00:00",
+        "ToDate": "2025-10-02T00:00:00",
+        "Title": "Durga Puja",
+        "Description": "Sunday, 28th September, 2025 to Thursday, 2nd October, 2025.",
+        "IsInstituteClose": true
+    },
+    {
+        "Id": 169,
+        "InstituteId": 95,
+        "AcademicBranchId": 50,
+        "AcademicSessionId": 202600021,
+        "FromDate": "2025-12-16T00:00:00",
+        "ToDate": "2025-12-16T00:00:00",
+        "Title": "Victory Day",
+        "Description": "Tuesday, 16th December, 2025",
+        "IsInstituteClose": true
+    },
+    {
+        "Id": 170,
+        "InstituteId": 95,
+        "AcademicBranchId": 50,
+        "AcademicSessionId": 202600021,
+        "FromDate": "2025-12-18T00:00:00",
+        "ToDate": "2025-12-18T00:00:00",
+        "Title": "End of First Term",
+        "Description": "Thursday, 18th December, 2025"
+    },
+    {
+        "Id": 171,
+        "InstituteId": 95,
+        "AcademicBranchId": 50,
+        "AcademicSessionId": 202600021,
+        "FromDate": "2025-12-25T00:00:00",
+        "ToDate": "2025-12-25T00:00:00",
+        "Title": "Christmas Day",
+        "Description": "Thursday, 25th December, 2025",
+        "IsInstituteClose": true
+    },
+    {
+        "Id": 172,
+        "InstituteId": 95,
+        "AcademicBranchId": 50,
+        "AcademicSessionId": 202600021,
+        "FromDate": "2026-01-18T00:00:00",
+        "ToDate": "2026-01-18T00:00:00",
+        "Title": "Second Term Classes Begin",
+        "Description": "Sunday, 18th January, 2026"
+    },
+    {
+        "Id": 173,
+        "InstituteId": 95,
+        "AcademicBranchId": 50,
+        "AcademicSessionId": 202600021,
+        "FromDate": "2026-01-23T00:00:00",
+        "ToDate": "2026-01-23T00:00:00",
+        "Title": "Saraswati Puja",
+        "Description": "Friday, 23rd January, 2026",
+        "IsInstituteClose": true
+    },
+    {
+        "Id": 174,
+        "InstituteId": 95,
+        "AcademicBranchId": 50,
+        "AcademicSessionId": 202600021,
+        "FromDate": "2026-02-04T00:00:00",
+        "ToDate": "2026-02-04T00:00:00",
+        "Title": "Shab-e-Barat",
+        "Description": "Wednesday, 4th February, 2026",
+        "IsInstituteClose": true
+    },
+    {
+        "Id": 175,
+        "InstituteId": 95,
+        "AcademicBranchId": 50,
+        "AcademicSessionId": 202600021,
+        "FromDate": "2026-02-21T00:00:00",
+        "ToDate": "2026-02-21T00:00:00",
+        "Title": "Int. Mother Language Day & Shaheed Day",
+        "Description": "Saturday, 21st February, 2026",
+        "IsInstituteClose": true
+    },
+    {
+        "Id": 176,
+        "InstituteId": 95,
+        "AcademicBranchId": 50,
+        "AcademicSessionId": 202600021,
+        "FromDate": "2026-03-01T00:00:00",
+        "ToDate": "2026-03-26T00:00:00",
+        "Title": "Ramadan break",
+        "Description": "Sunday, 1st March, 2026 to Thursday, 26th March, 2026",
+        "IsInstituteClose": true
+    },
+    {
+        "Id": 177,
+        "InstituteId": 95,
+        "AcademicBranchId": 50,
+        "AcademicSessionId": 202600021,
+        "FromDate": "2026-04-14T00:00:00",
+        "ToDate": "2026-04-14T00:00:00",
+        "Title": "Bengali New Year’s Day",
+        "Description": "Monday, 14th April, 2026",
+        "IsInstituteClose": true
+    },
+    {
+        "Id": 178,
+        "InstituteId": 95,
+        "AcademicBranchId": 50,
+        "AcademicSessionId": 202600050,
+        "FromDate": "2026-05-01T00:00:00",
+        "ToDate": "2026-05-01T00:00:00",
+        "Title": "May Day",
+        "Description": "Friday, 1st May, 2026",
+        "IsInstituteClose": true
+    },
+    {
+        "Id": 179,
+        "InstituteId": 95,
+        "AcademicBranchId": 50,
+        "AcademicSessionId": 202600021,
+        "FromDate": "2026-05-24T00:00:00",
+        "ToDate": "2026-05-31T00:00:00",
+        "Title": "Eid ul Azha",
+        "Description": "Sunday, 24th May, 2026 to Sunday, 31st May, 2026",
+        "IsInstituteClose": true
+    },
+    {
+        "Id": 180,
+        "InstituteId": 95,
+        "AcademicBranchId": 50,
+        "AcademicSessionId": 202600021,
+        "FromDate": "2026-06-20T00:00:00",
+        "ToDate": "2026-06-25T00:00:00",
+        "Title": "Final exams from Class 1 to Class 9",
+        "Description": "Saturday, 20th June to Thursday, 25th June, 2026"
+    },
+    {
+        "Id": 181,
+        "InstituteId": 95,
+        "AcademicBranchId": 50,
+        "AcademicSessionId": 202600021,
+        "FromDate": "2026-07-02T00:00:00",
+        "ToDate": "2026-07-02T00:00:00",
+        "Title": "Report Card Day",
+        "Description": "Thursday, 2nd July, 2026"
+    },
+    {
+        "Id": 182,
+        "InstituteId": 95,
+        "AcademicBranchId": 50,
+        "AcademicSessionId": 202600021,
+        "FromDate": "2026-07-26T00:00:00",
+        "ToDate": "2026-07-26T00:00:00",
+        "Title": "New Academic Year Starts On :",
+        "Description": "Sunday, 26th July 2026"
+    }
+]

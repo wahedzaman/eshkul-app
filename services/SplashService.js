@@ -15,7 +15,7 @@ class SplashService {
       AppSession.setSession(sessionData);
 
       // If Student (UserType 11), fetch details
-      if (sessionData.UserType === 11) {
+      if (sessionData.UserType === Strings.USER_TYPES.STUDENT) {
         const studentRes = await StudentService.fetchAndPersistDetails(sessionData.Id, sessionData.Token);
         if (studentRes.success) {
           return true;

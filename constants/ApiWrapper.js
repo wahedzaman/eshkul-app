@@ -7,5 +7,6 @@ export default {
     NOTIFICATIONS: '/api/Notification/DetailsByUserId',
     ACADEDMIC_CALENDAR: '/api/AcademicCalendar',
     ATTENDANCE: '/api/student/AttendanceDetails',
+    NOTICE: '/api/notice/listbyuser',
   },
 };

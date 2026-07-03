@@ -1,24 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, Dimensions, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
+import NoticeService from '../services/NoticeService';
 
 const { width } = Dimensions.get('window');
-const CARD_WIDTH = width - 48; // padding horizontal 24 * 2
+const PADDING = 24;
+const CARD_WIDTH = width - PADDING * 2;
 
 const NoticeItem = ({ title, date, color }) => {
   const { t } = useTranslation();
   return (
     <View 
       style={{ width: CARD_WIDTH, backgroundColor: color }} 
-      className="rounded-[32px] p-6 mr-4 h-48 flex-row justify-between items-center overflow-hidden relative"
+      className="rounded-[32px] p-6 h-48 flex-row justify-between items-center overflow-hidden relative"
     >
       {/* Background Shapes */}
       <View className="absolute right-0 top-0 bottom-0 w-1/2 bg-white/10 rounded-l-full" />
       <View className="absolute right-10 top-10 w-10 h-10 bg-pink-300 rounded-full opacity-50" />
       
-      <View className="flex-1 z-10">
-        <Text className="text-white text-xl font-medium mb-2">{title}</Text>
+      <View className="flex-1 z-10 mr-4">
+        <Text className="text-white text-xl font-medium mb-2" numberOfLines={4} ellipsizeMode="tail">{title}</Text>
         <Text className="text-white text-3xl font-bold">{date}</Text>
       </View>
 
@@ -30,9 +32,35 @@ const NoticeItem = ({ title, date, color }) => {
   );
 };
 
+const COLORS = ['#2563eb', '#8B5CF6', '#10B981', '#F59E0B', '#EF4444', '#06B6D4'];
+
+function formatNoticeDate(dateString) {
+  const date = new Date(dateString);
+  const day = date.getDate();
+  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const month = months[date.getMonth()];
+  const year = date.getFullYear();
+  return `${day} ${month} ${year}`;
+}
+
 export default function NewsAndNoticeCard() {
   const { t } = useTranslation();
   const [activeIndex, setActiveIndex] = useState(0);
+  const [notices, setNotices] = useState([]);
+
+  useEffect(() => {
+    NoticeService.fetchNotices().then((result) => {
+      if (result.success && result.data && result.data.length > 0) {
+        const mapped = result.data.map((item, index) => ({
+          id: item.Id,
+          title: item.NoticeTitle,
+          date: formatNoticeDate(item.StartDate),
+          color: COLORS[index % COLORS.length],
+        }));
+        setNotices(mapped);
+      }
+    });
+  }, []);
 
   const handleScroll = (event) => {
     const slideSize = event.nativeEvent.layoutMeasurement.width;
@@ -41,38 +69,35 @@ export default function NewsAndNoticeCard() {
     setActiveIndex(roundIndex);
   };
 
-  const notices = [
-    { id: 1, title: t('next_class_test'), date: '20 November 2025', color: '#2563eb' }, // Blue
-    { id: 2, title: 'Science Fair', date: '25 December 2025', color: '#8B5CF6' }, // Purple
-    { id: 3, title: 'Parent Meeting', date: '05 January 2026', color: '#10B981' }, // Green
-  ];
-
   return (
     <View className="mb-6">
       <ScrollView 
         horizontal 
-        pagingEnabled 
         showsHorizontalScrollIndicator={false}
         onScroll={handleScroll}
         scrollEventThrottle={16}
+        snapToInterval={width}
+        snapToAlignment="center"
+        decelerationRate="fast"
         className="mb-4"
       >
         {notices.map((notice) => (
-          <NoticeItem 
-            key={notice.id} 
-            title={notice.title} 
-            date={notice.date} 
-            color={notice.color} 
-          />
+          <View key={notice.id} style={{ width, alignItems: 'center' }}>
+            <NoticeItem 
+              title={notice.title} 
+              date={notice.date} 
+              color={notice.color} 
+            />
+          </View>
         ))}
       </ScrollView>
 
       {/* Pagination Dots */}
-      <View className="flex-row justify-center space-x-2">
+      <View className="flex-row justify-center">
         {notices.map((_, index) => (
           <View 
             key={index}
-            className={`w-3 h-3 rounded-full ${index === activeIndex ? 'bg-blue-600' : 'bg-gray-300'}`}
+            className={`mx-1 w-3 h-3 rounded-full ${index === activeIndex ? 'bg-blue-600' : 'bg-gray-300'}`}
           />
         ))}
       </View>

@@ -1,0 +1,95 @@
+# api
+https://eshkulappapi.projuktinext.com/api/notice/listbyuser
+
+# parameters
+userInfoTypeId=11
+
+# method
+POST
+
+# body (raw request body)
+{"startDateModel": "16-Jan-2026", "endDateModel": "13-Sep-2026"}
+
+# response
+{
+    "startDateModel": "2026-01-16T00:00:00",
+    "endDateModel": "2026-09-13T00:00:00",
+    "SearchData": [
+        {
+            "Id": 741,
+            "InstituteId": 95,
+            "StartDate": "2026-06-10T00:00:00",
+            "EndDate": "2023-11-01T00:00:00",
+            "NoticeTitle": "Admission Exam Result 2026-2027 (Playschool, Classes 2, 5, 6 & 8). Click here for details",
+            "NoticeBody": "<p>.</p><p></p>",
+            "IsActive": true,
+            "LastUpdateTime": "2023-11-01T19:34:06.907",
+            "NoticeTypeId": 11,
+            "IsDefaultShow": true,
+            "NoticeByBranches": [],
+            "NoticeByClasses": []
+        },
+        {
+            "Id": 1733,
+            "InstituteId": 95,
+            "StartDate": "2026-05-19T00:00:00",
+            "EndDate": "2026-05-19T00:00:00",
+            "NoticeTitle": ".",
+            "NoticeBody": "<p>.</p>",
+            "LastUpdateTime": "2026-05-19T23:50:44.9",
+            "NoticeTypeId": 11,
+            "NoticeByBranches": [],
+            "NoticeByClasses": []
+        },
+        {
+            "Id": 1734,
+            "InstituteId": 95,
+            "StartDate": "2026-05-19T00:00:00",
+            "EndDate": "2026-05-19T00:00:00",
+            "NoticeTitle": ".",
+            "NoticeBody": "<p>.</p>",
+            "LastUpdateTime": "2026-05-19T23:51:12.223",
+            "NoticeTypeId": 11,
+            "NoticeByBranches": [],
+            "NoticeByClasses": []
+        },
+        {
+            "Id": 1334,
+            "InstituteId": 95,
+            "StartDate": "2026-05-15T00:00:00",
+            "EndDate": "2025-05-03T00:00:00",
+            "NoticeTitle": "PLAYSCHOOL INTERVIEW SCHEDULE FOR 2026-2027. Click Here for Details",
+            "NoticeBody": "<p>.</p>",
+            "LastUpdateTime": "2025-05-03T23:15:49.69",
+            "NoticeTypeId": 11,
+            "IsDefaultShow": true,
+            "NoticeByBranches": [],
+            "NoticeByClasses": []
+        },
+        {
+            "Id": 742,
+            "InstituteId": 95,
+            "StartDate": "2026-05-13T00:00:00",
+            "EndDate": "2023-11-01T00:00:00",
+            "NoticeTitle": "Written Exam Results for Classes 2, 5, 6 and 8 (2026-2027). Click here for details",
+            "NoticeBody": "<p>.</p>",
+            "LastUpdateTime": "2023-11-01T19:34:36.613",
+            "NoticeTypeId": 11,
+            "IsDefaultShow": true,
+            "NoticeByBranches": [],
+            "NoticeByClasses": []
+        },
+        {
+            "Id": 1735,
+            "InstituteId": 95,
+            "StartDate": "2023-06-01T00:00:00",
+            "EndDate": "2026-05-19T00:00:00",
+            "NoticeTitle": ".",
+            "NoticeBody": "<p>.</p>",
+            "LastUpdateTime": "2026-05-19T23:51:36.23",
+            "NoticeTypeId": 11,
+            "NoticeByBranches": [],
+            "NoticeByClasses": []
+        }
+    ]
+}

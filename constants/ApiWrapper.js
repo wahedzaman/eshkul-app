@@ -8,5 +8,6 @@ export default {
     ACADEDMIC_CALENDAR: '/api/AcademicCalendar',
     ATTENDANCE: '/api/student/AttendanceDetails',
     NOTICE: '/api/notice/listbyuser',
+    TIMETABLE_STUDENT: '/api/Routine/Student', 
   },
 };

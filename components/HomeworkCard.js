@@ -44,8 +44,8 @@ const HomeworkItem = ({ subject, chapter, description, assignedDate, submissionD
         <Text className="text-gray-500 text-xs">{t('submission_date')}</Text>
       </View>
 
-      <View className="flex-row justify-between mb-2">
-        <Text className="text-[#0f172a] font-bold text-lg">{subject}</Text>
+      <View className="flex-row justify-between items-start mb-2 space-x-4">
+        <Text className="text-[#0f172a] font-bold text-lg flex-1" numberOfLines={2}>{subject}</Text>
         <Text className="text-green-600 font-bold">{submissionDate}</Text>
       </View>
 

@@ -23,16 +23,7 @@ export default function LoginScreen({ navigation }) {
       setIsLoading(false);
 
       if (response.success) {
-        Alert.alert(
-          t('success'),
-          t('login_success'),
-          [
-            {
-              text: t('ok'),
-              onPress: () => navigation.replace('AppContainer'),
-            }
-          ]
-        );
+        navigation.replace('AppContainer');
       } else {
         const errorMsg = response.type === 'failed' ? t('login_failed') : t('login_error');
         Alert.alert(

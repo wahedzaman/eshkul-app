@@ -13,8 +13,8 @@ class NotificationService {
 
     const params = {
       employeeId: AppSession.id || 304396,
-      fDate: '2020-01-01',
-      tDate: tDate,
+      fDate: tDate,
+      // tDate: tDate,
       notificationTypeId: 103,
     };
 

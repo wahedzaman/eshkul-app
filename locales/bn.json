@@ -23,6 +23,8 @@
   "attendance_overview": "উপস্থিতি ওভারভিউ",
   "view_all": "সব দেখুন",
   "today": "আজ",
+  "all": "সব",
+  "upcoming": "আসন্ন",
   "present": "উপস্থিত",
   "days_presents": "দিন উপস্থিত",
   "late_entry": "দেরিতে প্রবেশ",
@@ -68,5 +70,6 @@
   "month_ago": "১ মাস আগে",
   "months_ago": "মাস আগে",
   "year_ago": "১ বছর আগে",
-  "years_ago": "বছর আগে"
+  "years_ago": "বছর আগে",
+  "no_homework_found": "কোনো হোমওয়ার্ক পাওয়া যায়নি"
 }

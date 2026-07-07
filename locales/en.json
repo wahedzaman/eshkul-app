@@ -22,6 +22,7 @@
   "attendance_overview": "Attendance Overview",
   "view_all": "View All",
   "today": "Today",
+  "upcoming": "Upcoming",
   "present": "Present",
   "days_presents": "Days Presents",
   "late_entry": "late entry",
@@ -106,5 +107,6 @@
   "month_ago": "1 month ago",
   "months_ago": "months ago",
   "year_ago": "1 year ago",
-  "years_ago": "years ago"
+  "years_ago": "years ago",
+  "no_homework_found": "No homework found"
 }

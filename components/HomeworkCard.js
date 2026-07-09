@@ -56,21 +56,21 @@ const HomeworkItem = ({ subject, chapter, description, assignedDate, submissionD
 
       <View className="flex-row justify-between items-center">
         <View className="flex-row items-center">
-          {/* <Image
-            source={{ uri: 'https://randomuser.me/api/portraits/women/44.jpg' }}
+          <Image
+            source={require('../assets/user.png')}
             className="w-8 h-8 rounded-full mr-2"
-          /> */}
+          />
           <Text className="text-[#0f172a] font-medium">{teacherName}</Text>
         </View>
 
-        <View className="flex-row space-x-3">
+        {/* <View className="flex-row space-x-3">
           <TouchableOpacity className="bg-blue-500 p-2 rounded-full">
             <Ionicons name="chatbubble-ellipses-outline" size={20} color="white" />
           </TouchableOpacity>
           <TouchableOpacity className="bg-blue-500 p-2 rounded-full ml-1">
             <Ionicons name="call-outline" size={20} color="white" />
           </TouchableOpacity>
-        </View>
+        </View> */}
       </View>
     </View>
   );
@@ -97,10 +97,10 @@ export default function HomeworkCard() {
 
   const filteredHomeworks = homeworks.filter(item => {
     if (activeFilter === 'all') return true;
-    
+
     const today = new Date();
     const itemDate = new Date(item.StartDate);
-    
+
     if (activeFilter === 'today') {
       return (
         itemDate.getFullYear() === today.getFullYear() &&

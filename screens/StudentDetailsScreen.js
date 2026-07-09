@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, ScrollView, Image, SafeAreaView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
 import AppSession from '../services/AppSession';
@@ -35,13 +36,14 @@ export default function StudentDetailsScreen({ navigation }) {
   }
 
   const avatarUri = student.largeImageUrl
-    ? (student.largeImageUrl.startsWith('http') ? student.largeImageUrl : `${ApiWrapper.BASE_URL}/${student.largeImageUrl}`)
+    ? (student.largeImageUrl.startsWith('http') ? student.largeImageUrl : `${ApiWrapper.API_CONTENT_URL_PREFIX}/${student.largeImageUrl}`)
     : (student.smallImageUrl
-      ? (student.smallImageUrl.startsWith('http') ? student.smallImageUrl : `${ApiWrapper.BASE_URL}/${student.smallImageUrl}`)
+      ? (student.smallImageUrl.startsWith('http') ? student.smallImageUrl : `${ApiWrapper.API_CONTENT_URL_PREFIX}/${student.smallImageUrl}`)
       : null);
 
   return (
     <SafeAreaView className="flex-1 bg-gray-50">
+      {/* appbar */}
       <View className="flex-row items-center px-4 py-3 bg-white border-b border-gray-100">
         <TouchableOpacity onPress={() => navigation.goBack()} className="p-1">
           <Ionicons name="arrow-back" size={24} color="#0f172a" />
@@ -86,7 +88,6 @@ export default function StudentDetailsScreen({ navigation }) {
           <DetailRow label={t('father_name')} value={student.fatherName} />
           <DetailRow label={t('mother_name')} value={student.motherName} />
           <DetailRow label={t('contact_no')} value={student.contactNumber1 || student.contactNumber2} />
-          <DetailRow label={t('joining_date')} value={student.joiningDate} />
         </DetailSection>
 
         <View className="h-10" />

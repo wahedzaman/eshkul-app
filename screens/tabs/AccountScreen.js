@@ -44,10 +44,10 @@ const ProfileHeader = ({ onPress }) => {
   const { t } = useTranslation();
   const student = AppSession.student;
 
-  const avatarUri = student?.smallImageUrl
-    ? (student.smallImageUrl.startsWith('http') ? student.smallImageUrl : `${ApiWrapper.BASE_URL}/${student.smallImageUrl}`)
-    : (AppSession.userSmallImage
-      ? (AppSession.userSmallImage.startsWith('http') ? AppSession.userSmallImage : `${ApiWrapper.BASE_URL}/${AppSession.userSmallImage}`)
+  const avatarUri = student.largeImageUrl
+    ? (student.largeImageUrl.startsWith('http') ? student.largeImageUrl : `${ApiWrapper.API_CONTENT_URL_PREFIX}/${student.largeImageUrl}`)
+    : (student.smallImageUrl
+      ? (student.smallImageUrl.startsWith('http') ? student.smallImageUrl : `${ApiWrapper.API_CONTENT_URL_PREFIX}/${student.smallImageUrl}`)
       : null);
 
   return (
@@ -83,7 +83,7 @@ const ProfileHeader = ({ onPress }) => {
               {t('class_label')} {student.academicClass}
             </Text>
             <Text className="text-gray-500 text-sm">
-              {t('shift_label')} {student.academicShift}
+              {t('email')}: {student.emailAddress ?? 'N/A'}
             </Text>
           </>
         ) : null}
@@ -112,12 +112,12 @@ export default function AccountScreen({ navigation }) {
         {/* Profile Header */}
         <ProfileHeader onPress={() => navigation.navigate('StudentDetails')} />
 
-        {/* General Section (No Title) */}
+        {/* General Section (No Title)
         <MenuGroup>
           <MenuItem icon="person-circle-outline" label={t('account')} />
           <View className="h-[1px] bg-gray-100" />
           <MenuItem icon="color-wand-outline" label={t('customization')} />
-        </MenuGroup>
+        </MenuGroup> */}
 
         {/* Account Management */}
         <MenuGroup title={t('account_management')} >
@@ -173,7 +173,7 @@ export default function AccountScreen({ navigation }) {
             <Text className="text-[#0f172a] font-bold text-lg text-center mb-2">
               {t('confirm_logout_title')}
             </Text>
-            
+
             <Text className="text-gray-500 text-sm text-center mb-6">
               {t('confirm_logout_desc')}
             </Text>

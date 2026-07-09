@@ -42,6 +42,7 @@ class Student {
     this.leaveDate = data.LeaveDate || '';
     this.feeStartDate = data.FeeStartDate || '';
     this.classStartDate = data.ClassStartDate || '';
+    this.emailAddress = data.EmailAddress || null;
     this.tcReason = data.TcReason || '';
   }
 }

@@ -108,5 +108,14 @@
   "months_ago": "months ago",
   "year_ago": "1 year ago",
   "years_ago": "years ago",
-  "no_homework_found": "No homework found"
+  "no_homework_found": "No homework found",
+  "no_routine_found": "No classes today",
+  "sunday": "Sunday",
+  "monday": "Monday",
+  "tuesday": "Tuesday",
+  "wednesday": "Wednesday",
+  "thursday": "Thursday",
+  "friday": "Friday",
+  "saturday": "Saturday",
+  "email": "Email"
 }

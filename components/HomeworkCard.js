@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, ScrollView, ActivityIndicator } from 'react-native';
+import Animated, { FadeIn, FadeOut, LinearTransition } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
 import HomeworkService from '../services/HomeworkService';
@@ -38,7 +39,12 @@ const FilterChip = ({ label, count, isActive, onPress }) => (
 const HomeworkItem = ({ subject, chapter, description, assignedDate, submissionDate, teacherName }) => {
   const { t } = useTranslation();
   return (
-    <View className="bg-white rounded-2xl p-4 mb-4 border border-gray-100 shadow-sm">
+    <Animated.View 
+      entering={FadeIn.duration(300)} 
+      exiting={FadeOut.duration(200)} 
+      layout={LinearTransition.springify().damping(16).stiffness(120)}
+      className="bg-white rounded-2xl p-4 mb-4 border border-gray-100 shadow-sm"
+    >
       <View className="flex-row justify-between mb-1">
         <Text className="text-gray-500 text-xs">{t('assigned')} {assignedDate}</Text>
         <Text className="text-gray-500 text-xs">{t('submission_date')}</Text>
@@ -72,11 +78,11 @@ const HomeworkItem = ({ subject, chapter, description, assignedDate, submissionD
           </TouchableOpacity>
         </View> */}
       </View>
-    </View>
+    </Animated.View>
   );
 };
 
-export default function HomeworkCard() {
+export default function HomeworkCard({ refreshTrigger }) {
   const { t } = useTranslation();
   const [activeFilter, setActiveFilter] = useState('all');
   const [homeworks, setHomeworks] = useState([]);
@@ -84,7 +90,7 @@ export default function HomeworkCard() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [refreshTrigger]);
 
   const fetchData = async () => {
     setLoading(true);
@@ -114,7 +120,9 @@ export default function HomeworkCard() {
     return true;
   });
 
-
+  const handleFilterChange = (filter) => {
+    setActiveFilter(filter);
+  };
 
   return (
     <View className="bg-white rounded-[32px] p-6 mb-6 shadow-sm">
@@ -125,19 +133,19 @@ export default function HomeworkCard() {
           label={t('all')}
           // count={2} 
           isActive={activeFilter === 'all'}
-          onPress={() => setActiveFilter('all')}
+          onPress={() => handleFilterChange('all')}
         />
         <FilterChip
           label={t('today')}
           // count={4}
           isActive={activeFilter === 'today'}
-          onPress={() => setActiveFilter('today')}
+          onPress={() => handleFilterChange('today')}
         />
         <FilterChip
           label={t('upcoming')}
           // count={1}
           isActive={activeFilter === 'upcoming'}
-          onPress={() => setActiveFilter('upcoming')}
+          onPress={() => handleFilterChange('upcoming')}
         />
       </ScrollView>
 

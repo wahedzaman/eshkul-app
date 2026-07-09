@@ -11,9 +11,11 @@ import AcademicCalendarCard from '../../components/AcademicCalendarCard';
 export default function HomeScreen() {
   const { t } = useTranslation();
   const [refreshing, setRefreshing] = useState(false);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
+    setRefreshTrigger(prev => prev + 1);
     setTimeout(() => {
       setRefreshing(false);
     }, 2000);
@@ -26,12 +28,12 @@ export default function HomeScreen() {
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
     >
-      <BalanceCard />
-      <AttendanceCard />
-      <HomeworkCard />
-      <NewsAndNoticeCard />
-      <ClassRoutineCard />
-      <AcademicCalendarCard />
+      <BalanceCard refreshTrigger={refreshTrigger} />
+      <AttendanceCard refreshTrigger={refreshTrigger} />
+      <HomeworkCard refreshTrigger={refreshTrigger} />
+      <NewsAndNoticeCard refreshTrigger={refreshTrigger} />
+      <ClassRoutineCard refreshTrigger={refreshTrigger} />
+      <AcademicCalendarCard refreshTrigger={refreshTrigger} />
       {/* Add padding at bottom for scroll */}
       <View className="h-20" />
     </ScrollView>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, ActivityIndicator, ScrollView } from 'react-native';
+import Animated, { FadeIn, FadeOut, LinearTransition } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
 import RoutineService from '../services/RoutineService';
@@ -17,7 +18,12 @@ const FilterChip = ({ label, isActive, onPress }) => (
 );
 
 const RoutineItem = ({ dayName, timeStart, timeEnd, subject, room, teacher, isActive, isLast }) => (
-  <View className="flex-row mb-1">
+  <Animated.View 
+    entering={FadeIn.duration(300)} 
+    exiting={FadeOut.duration(200)} 
+    layout={LinearTransition.springify().damping(16).stiffness(120)}
+    className="flex-row mb-1"
+  >
     <View className="w-16 pt-1 mr-2 items-end">
       {dayName && <Text className="text-blue-500 font-bold text-[10px] mb-0.5">{dayName}</Text>}
       <Text className="text-[#0f172a] font-bold  text-sm">{timeStart}</Text>
@@ -49,7 +55,7 @@ const RoutineItem = ({ dayName, timeStart, timeEnd, subject, room, teacher, isAc
         <Text className="text-[#0f172a] text-sm">{teacher.name}</Text>
       </View>
     </View>
-  </View>
+  </Animated.View>
 );
 
 function getCurrentPeriodIndex(schedule) {
@@ -86,7 +92,7 @@ function getTodayLabel() {
   return days[new Date().getDay()];
 }
 
-export default function ClassRoutineCard() {
+export default function ClassRoutineCard({ refreshTrigger }) {
   const { t } = useTranslation();
   const [activeFilter, setActiveFilter] = useState('today');
   const [fullRoutine, setFullRoutine] = useState(null);
@@ -94,7 +100,7 @@ export default function ClassRoutineCard() {
 
   useEffect(() => {
     fetchRoutine();
-  }, []);
+  }, [refreshTrigger]);
 
   const fetchRoutine = async () => {
     setLoading(true);

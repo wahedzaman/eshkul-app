@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
+import Animated, { FadeIn, FadeOut, LinearTransition } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
 import AcademicCalendarService from '../services/AcademicCalendarService';
@@ -43,7 +44,12 @@ const FilterChip = ({ label, isActive, onPress }) => (
 );
 
 const EventItem = ({ day, date, title, description }) => (
-  <View className="flex-row mb-4">
+  <Animated.View 
+    entering={FadeIn.duration(300)} 
+    exiting={FadeOut.duration(200)} 
+    layout={LinearTransition.springify().damping(16).stiffness(120)}
+    className="flex-row mb-4"
+  >
     {/* Date Column */}
     <View className="w-12 pt-1 mr-3 items-center">
       <Text className="text-[#0f172a] font-bold text-base">{day}</Text>
@@ -55,10 +61,10 @@ const EventItem = ({ day, date, title, description }) => (
       <Text className="text-[#0f172a] font-bold text-lg mb-1">{title}</Text>
       <Text className="text-gray-500 text-sm leading-5">{description}</Text>
     </View>
-  </View>
+  </Animated.View>
 );
 
-export default function AcademicCalendarCard() {
+export default function AcademicCalendarCard({ refreshTrigger }) {
   const { t } = useTranslation();
   const [activeFilter, setActiveFilter] = useState('all');
   const [events, setEvents] = useState([]);
@@ -77,7 +83,7 @@ export default function AcademicCalendarCard() {
 
   useEffect(() => {
     fetchEvents();
-  }, [fetchEvents]);
+  }, [fetchEvents, refreshTrigger]);
 
   const categorizedEvents = events.map(item => ({
     ...item,

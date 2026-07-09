@@ -42,7 +42,7 @@ function formatNoticeDate(dateString) {
   return `${day} ${month} ${year}`;
 }
 
-export default function NewsAndNoticeCard() {
+export default function NewsAndNoticeCard({ refreshTrigger }) {
   const { t } = useTranslation();
   const [activeIndex, setActiveIndex] = useState(0);
   const [notices, setNotices] = useState([]);
@@ -59,7 +59,7 @@ export default function NewsAndNoticeCard() {
         setNotices(mapped);
       }
     });
-  }, []);
+  }, [refreshTrigger]);
 
   const handleScroll = (event) => {
     const slideSize = event.nativeEvent.layoutMeasurement.width;

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import Svg, { Circle, G } from 'react-native-svg';
 import AttendanceService from '../services/AttendanceService';
 
-export default function AttendanceCard() {
+export default function AttendanceCard({ refreshTrigger }) {
   const { t } = useTranslation();
 
   const [stats, setStats] = useState({ present: 0, absent: 0, late: 0, total: 0, percentage: 0 });
@@ -25,7 +25,7 @@ export default function AttendanceCard() {
 
   useEffect(() => {
     fetchData();
-  }, [fetchData]);
+  }, [fetchData, refreshTrigger]);
 
   const cardBgColor = 'bg-white';
   const titleColor = 'text-navy';

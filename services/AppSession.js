@@ -1,6 +1,8 @@
 import StorageManager from './StorageManager';
 import Strings from '../constants/Strings';
 import Student from '../models/Student';
+import Employee from '../models/Employee';
+import EmployeeAddress from '../models/EmployeeAddress';
 
 class AppSession {
   constructor() {
@@ -14,7 +16,9 @@ class AppSession {
     this.userType = null;
     this.id = null;
     this.siblings = [];
-    this.student = null; // Holds instantiated Student model (nullable)
+    this.student = null;
+    this.employee = null;
+    this.employeeAddresses = [];
 
     AppSession.instance = this;
   }
@@ -40,6 +44,11 @@ class AppSession {
     this.student = student;
   }
 
+  setEmployee(employee, addresses = []) {
+    this.employee = employee;
+    this.employeeAddresses = addresses;
+  }
+
   async loadSession() {
     try {
       const data = await StorageManager.getItem(Strings.STORAGE_KEYS.USER_SESSION);
@@ -47,10 +56,16 @@ class AppSession {
         this.setSession(data);
         
         // Load persistent student details if profile exists
-        if (data.UserType === 11) {
+        if (data.UserType === Strings.USER_TYPES.STUDENT) {
           const studentData = await StorageManager.getItem(Strings.STORAGE_KEYS.STUDENT_DETAILS);
           if (studentData && studentData.Student) {
             this.student = new Student(studentData.Student);
+          }
+        } else {
+          const employeeData = await StorageManager.getItem(Strings.STORAGE_KEYS.EMPLOYEE_DETAILS);
+          if (employeeData && employeeData.Employee) {
+            this.employee = new Employee(employeeData.Employee);
+            this.employeeAddresses = (employeeData.Addresses || []).map(a => new EmployeeAddress(a));
           }
         }
         return true;
@@ -70,9 +85,12 @@ class AppSession {
     this.id = null;
     this.siblings = [];
     this.student = null;
+    this.employee = null;
+    this.employeeAddresses = [];
     try {
       await StorageManager.removeItem(Strings.STORAGE_KEYS.USER_SESSION);
       await StorageManager.removeItem(Strings.STORAGE_KEYS.STUDENT_DETAILS);
+      await StorageManager.removeItem(Strings.STORAGE_KEYS.EMPLOYEE_DETAILS);
     } catch (error) {
       console.error('AppSession clearSession Error:', error);
     }

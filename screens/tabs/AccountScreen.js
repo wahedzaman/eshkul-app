@@ -6,6 +6,7 @@ import { CommonActions } from '@react-navigation/native';
 import AppSession from '../../services/AppSession';
 import AccountManager from '../../services/AccountManager';
 import ApiWrapper from '../../constants/ApiWrapper';
+import Strings from '../../constants/Strings';
 import AccountSwitcherDialog from '../../components/AccountSwitcherDialog';
 
 const MenuItem = ({ icon, label, onPress, isLast, rightElement }) => (
@@ -45,18 +46,32 @@ const MenuGroup = ({ title, children, showNewBadge }) => (
 
 const ProfileHeader = ({ onPress }) => {
   const { t } = useTranslation();
+  const isStudent = AppSession.userType === Strings.USER_TYPES.STUDENT;
   const student = AppSession.student;
+  const employee = AppSession.employee;
 
-  const avatarUri = student.largeImageUrl
-    ? (student.largeImageUrl.startsWith('http') ? student.largeImageUrl : `${ApiWrapper.API_CONTENT_URL_PREFIX}/${student.largeImageUrl}`)
-    : (student.smallImageUrl
-      ? (student.smallImageUrl.startsWith('http') ? student.smallImageUrl : `${ApiWrapper.API_CONTENT_URL_PREFIX}/${student.smallImageUrl}`)
-      : null);
+  const resolveImageUri = (largeUrl, smallUrl) => {
+    if (largeUrl) {
+      return largeUrl.startsWith('http') ? largeUrl : `${ApiWrapper.API_CONTENT_URL_PREFIX}/${largeUrl}`;
+    }
+    if (smallUrl) {
+      return smallUrl.startsWith('http') ? smallUrl : `${ApiWrapper.API_CONTENT_URL_PREFIX}/${smallUrl}`;
+    }
+    return null;
+  };
+
+  const avatarUri = isStudent
+    ? resolveImageUri(student?.largeImageUrl, student?.smallImageUrl)
+    : resolveImageUri(employee?.largeImageUrl, employee?.smallImageUrl);
+
+  const displayName = isStudent
+    ? (student?.name || AppSession.userName || '')
+    : (employee?.name || AppSession.userName || '');
 
   return (
     <TouchableOpacity
       onPress={onPress}
-      disabled={!student}
+      disabled={isStudent ? !student : !employee}
       activeOpacity={0.7}
       className="bg-white rounded-3xl p-4 mb-6 shadow-sm mx-4 flex-row items-center"
     >
@@ -75,9 +90,9 @@ const ProfileHeader = ({ onPress }) => {
       )}
       <View className="flex-1">
         <Text className="text-[#0f172a] font-bold text-lg">
-          {student?.name || AppSession.userName || ''}
+          {displayName}
         </Text>
-        {student ? (
+        {isStudent && student ? (
           <>
             <Text className="text-gray-500 text-sm">
               {t('roll_no')} {student.currentRollNo}
@@ -87,6 +102,13 @@ const ProfileHeader = ({ onPress }) => {
             </Text>
             <Text className="text-gray-500 text-sm">
               {t('email')}: {student.emailAddress ?? 'N/A'}
+            </Text>
+          </>
+        ) : null}
+        {!isStudent && employee ? (
+          <>
+            <Text className="text-gray-500 text-sm">
+              {employee.designation}
             </Text>
           </>
         ) : null}
@@ -141,7 +163,10 @@ export default function AccountScreen({ navigation }) {
     <View className="flex-1 bg-gray-50">
       <ScrollView className="flex-1 pt-4">
         {/* Profile Header */}
-        <ProfileHeader onPress={() => navigation.navigate('StudentDetails')} />
+        <ProfileHeader onPress={() => {
+          const target = AppSession.userType === Strings.USER_TYPES.STUDENT ? 'StudentDetails' : 'EmployeeDetails';
+          navigation.navigate(target);
+        }} />
 
         {/* Account Management */}
         <MenuGroup title={t('account_management')} >

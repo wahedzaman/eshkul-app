@@ -2,7 +2,10 @@ import StorageManager from './StorageManager';
 import Strings from '../constants/Strings';
 import AppSession from './AppSession';
 import Student from '../models/Student';
+import Employee from '../models/Employee';
+import EmployeeAddress from '../models/EmployeeAddress';
 import StudentService from './StudentService';
+import EmployeeService from './EmployeeService';
 
 class AccountManager {
   static async getAccounts() {
@@ -10,7 +13,7 @@ class AccountManager {
     return accounts || [];
   }
 
-  static async addAccount(sessionData, studentData = null) {
+  static async addAccount(sessionData, studentData = null, employeeData = null) {
     const accounts = await this.getAccounts();
 
     const entry = {
@@ -20,6 +23,7 @@ class AccountManager {
       userType: sessionData.UserType || null,
       sessionData,
       studentData,
+      employeeData,
     };
 
     const existingIndex = accounts.findIndex(a => a.id === entry.id);
@@ -50,6 +54,9 @@ class AccountManager {
     await StorageManager.setItem(Strings.STORAGE_KEYS.USER_SESSION, target.sessionData);
 
     if (target.sessionData.UserType === Strings.USER_TYPES.STUDENT) {
+      AppSession.setEmployee(null, []);
+      await StorageManager.removeItem(Strings.STORAGE_KEYS.EMPLOYEE_DETAILS);
+
       const studentRes = await StudentService.fetchAndPersistDetails(
         target.sessionData.Id,
         target.sessionData.Token
@@ -62,6 +69,17 @@ class AccountManager {
     } else {
       AppSession.setStudent(null);
       await StorageManager.removeItem(Strings.STORAGE_KEYS.STUDENT_DETAILS);
+
+      const employeeRes = await EmployeeService.fetchAndPersistDetails(
+        target.sessionData.Id,
+        target.sessionData.Token
+      );
+      if (!employeeRes.success && target.employeeData && target.employeeData.Employee) {
+        const employee = new Employee(target.employeeData.Employee);
+        const addresses = (target.employeeData.Addresses || []).map(a => new EmployeeAddress(a));
+        AppSession.setEmployee(employee, addresses);
+        await StorageManager.setItem(Strings.STORAGE_KEYS.EMPLOYEE_DETAILS, target.employeeData);
+      }
     }
 
     return { success: true };
@@ -87,11 +105,14 @@ class AccountManager {
     }
 
     let studentData = null;
+    let employeeData = null;
     if (sessionData.UserType === Strings.USER_TYPES.STUDENT) {
       studentData = await StorageManager.getItem(Strings.STORAGE_KEYS.STUDENT_DETAILS);
+    } else {
+      employeeData = await StorageManager.getItem(Strings.STORAGE_KEYS.EMPLOYEE_DETAILS);
     }
 
-    await this.addAccount(sessionData, studentData);
+    await this.addAccount(sessionData, studentData, employeeData);
   }
 }
 

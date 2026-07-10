@@ -4,6 +4,7 @@ import Strings from '../constants/Strings';
 import AppSession from './AppSession';
 import StorageManager from './StorageManager';
 import StudentService from './StudentService';
+import EmployeeService from './EmployeeService';
 import AccountManager from './AccountManager';
 
 class AuthService {
@@ -33,6 +34,7 @@ class AuthService {
 
     // If student, fetch and persist details immediately during login
     let studentData = null;
+    let employeeData = null;
     if (response.data.UserType === Strings.USER_TYPES.STUDENT) {
       const studentRes = await StudentService.fetchAndPersistDetails(response.data.Id, response.data.Token);
       if (!studentRes.success) {
@@ -40,9 +42,16 @@ class AuthService {
         return { success: false, type: 'failed', error: 'student_details_failed' };
       }
       studentData = await StorageManager.getItem(Strings.STORAGE_KEYS.STUDENT_DETAILS);
+    } else {
+      const employeeRes = await EmployeeService.fetchAndPersistDetails(response.data.Id, response.data.Token);
+      if (!employeeRes.success) {
+        await AppSession.clearSession();
+        return { success: false, type: 'failed', error: 'employee_details_failed' };
+      }
+      employeeData = await StorageManager.getItem(Strings.STORAGE_KEYS.EMPLOYEE_DETAILS);
     }
 
-    await AccountManager.addAccount(response.data, studentData);
+    await AccountManager.addAccount(response.data, studentData, employeeData);
 
     return { success: true, data: response.data };
   }

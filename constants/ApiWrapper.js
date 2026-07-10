@@ -5,6 +5,7 @@ export default {
   ENDPOINTS: {
     LOGIN: '/api/auth/Login',
     STUDENT_DETAILS: '/api/student/details',
+    EMPLOYEE_DETAILS: '/api/employee/details',
     NOTIFICATIONS: '/api/Notification/DetailsByUserId',
     ACADEDMIC_CALENDAR: '/api/AcademicCalendar',
     ATTENDANCE: '/api/student/AttendanceDetails',

@@ -4,6 +4,7 @@ export default {
   STORAGE_KEYS: {
     USER_SESSION: 'user_session',
     STUDENT_DETAILS: 'student_details',
+    EMPLOYEE_DETAILS: 'employee_details',
     MULTI_ACCOUNTS: 'multi_accounts',
   },
   USER_TYPES: {

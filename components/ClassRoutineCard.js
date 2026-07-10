@@ -40,7 +40,7 @@ const RoutineItem = ({ dayName, timeStart, timeEnd, subject, room, teacher, isAc
 
     <View className={`flex-1 p-4 rounded-2xl mb-6 ${isActive ? 'bg-blue-100' : 'bg-gray-100'}`}>
       <View className="flex-row justify-between mb-1">
-        <Text className="text-[#0f172a] font-bold text-lg flex-1" numberOfLines={1}>{subject}</Text>
+        <Text className="text-[#0f172a] font-bold text-lg flex-1">{subject}</Text>
         <Text className="text-gray-500 text-sm ml-2">{room}</Text>
       </View>
 
@@ -53,7 +53,7 @@ const RoutineItem = ({ dayName, timeStart, timeEnd, subject, room, teacher, isAc
           }
           className="w-6 h-6 rounded-full mr-2"
         />
-        <Text className="text-[#0f172a] text-sm">{teacher.name}</Text>
+        <Text className="text-[#0f172a] text-sm flex-1">{teacher.name}</Text>
       </View>
     </View>
   </Animated.View>
@@ -171,7 +171,7 @@ export default function ClassRoutineCard({ refreshTrigger }) {
       </View>
 
       {schedule.length > 4 && (
-        <TouchableOpacity 
+        <TouchableOpacity
           className="border border-blue-500 rounded-full py-3 items-center mt-2"
           onPress={() => navigation.navigate('ClassRoutineList')}
         >

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, ScrollView, ActivityIndicator } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { FadeIn, FadeOut, LinearTransition } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 import HomeworkService from '../services/HomeworkService';
 
 function formatAssignedDate(dateString) {
@@ -32,7 +32,7 @@ const FilterChip = ({ label, count, isActive, onPress }) => (
     className={`px-4 py-2 rounded-full mr-3 border ${isActive ? 'bg-[#0f172a] border-[#0f172a]' : 'bg-white border-gray-300'}`}
   >
     <Text className={`${isActive ? 'text-white' : 'text-[#0f172a]'} font-bold`}>
-      {count} {label}
+      {count ? `${count} ` : ''}{label}
     </Text>
   </TouchableOpacity>
 );
@@ -44,7 +44,7 @@ const HomeworkItem = ({ subject, chapter, description, assignedDate, submissionD
       entering={FadeIn.duration(300)}
       exiting={FadeOut.duration(200)}
       layout={LinearTransition.springify().damping(16).stiffness(120)}
-      className="bg-white rounded-2xl p-4 mb-4 border border-gray-100 shadow-sm"
+      className="bg-white rounded-2xl p-4 mb-4 border border-gray-100 shadow-sm mx-4"
     >
       <View className="flex-row justify-between mb-1">
         <Text className="text-gray-500 text-xs">{t('assigned')} {assignedDate}</Text>
@@ -69,30 +69,20 @@ const HomeworkItem = ({ subject, chapter, description, assignedDate, submissionD
           />
           <Text className="text-[#0f172a] font-medium">{teacherName}</Text>
         </View>
-
-        {/* <View className="flex-row space-x-3">
-          <TouchableOpacity className="bg-blue-500 p-2 rounded-full">
-            <Ionicons name="chatbubble-ellipses-outline" size={20} color="white" />
-          </TouchableOpacity>
-          <TouchableOpacity className="bg-blue-500 p-2 rounded-full ml-1">
-            <Ionicons name="call-outline" size={20} color="white" />
-          </TouchableOpacity>
-        </View> */}
       </View>
     </Animated.View>
   );
 };
 
-export default function HomeworkCard({ refreshTrigger }) {
+export default function HomeworkListScreen({ navigation }) {
   const { t } = useTranslation();
-  const navigation = useNavigation();
   const [activeFilter, setActiveFilter] = useState('all');
   const [homeworks, setHomeworks] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchData();
-  }, [refreshTrigger]);
+  }, []);
 
   const fetchData = async () => {
     setLoading(true);
@@ -127,37 +117,43 @@ export default function HomeworkCard({ refreshTrigger }) {
   };
 
   return (
-    <View className="bg-white rounded-[32px] p-6 mb-6 shadow-sm">
-      <Text className="text-xl font-bold text-[#0f172a] mb-4">{t('homework_title')}</Text>
+    <SafeAreaView className="flex-1 bg-gray-50">
+      <View className="flex-row items-center px-4 py-3 bg-white border-b border-gray-100">
+        <TouchableOpacity onPress={() => navigation.goBack()} className="p-1">
+          <Ionicons name="arrow-back" size={24} color="#0f172a" />
+        </TouchableOpacity>
+        <Text className="flex-1 text-[#0f172a] font-bold text-lg text-center mr-8">
+          {t('homework_title') || 'Homework'}
+        </Text>
+      </View>
 
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-6">
-        <FilterChip
-          label={t('all')}
-          // count={2} 
-          isActive={activeFilter === 'all'}
-          onPress={() => handleFilterChange('all')}
-        />
-        <FilterChip
-          label={t('today')}
-          // count={4}
-          isActive={activeFilter === 'today'}
-          onPress={() => handleFilterChange('today')}
-        />
-        <FilterChip
-          label={t('upcoming')}
-          // count={1}
-          isActive={activeFilter === 'upcoming'}
-          onPress={() => handleFilterChange('upcoming')}
-        />
-      </ScrollView>
+      <View className="bg-white px-4 py-4 mb-2 shadow-sm">
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <FilterChip
+            label={t('all')}
+            isActive={activeFilter === 'all'}
+            onPress={() => handleFilterChange('all')}
+          />
+          <FilterChip
+            label={t('today')}
+            isActive={activeFilter === 'today'}
+            onPress={() => handleFilterChange('today')}
+          />
+          <FilterChip
+            label={t('upcoming')}
+            isActive={activeFilter === 'upcoming'}
+            onPress={() => handleFilterChange('upcoming')}
+          />
+        </ScrollView>
+      </View>
 
-      <View>
+      <ScrollView className="flex-1 pt-4">
         {loading ? (
           <View className="py-8 items-center justify-center">
             <ActivityIndicator size="large" color="#2563eb" />
           </View>
         ) : filteredHomeworks.length > 0 ? (
-          filteredHomeworks.slice(0, 3).map((item, index) => {
+          filteredHomeworks.map((item, index) => {
             const chapterDesc = item.VcrDiaryGroups && item.VcrDiaryGroups.length > 0 ? item.VcrDiaryGroups[0].Description : '';
             return (
               <HomeworkItem
@@ -176,15 +172,8 @@ export default function HomeworkCard({ refreshTrigger }) {
             <Text className="text-gray-500 font-medium">{t('no_homework_found')}</Text>
           </View>
         )}
-      </View>
-      {filteredHomeworks.length > 3 && (
-        <TouchableOpacity 
-          className="border border-blue-500 rounded-full py-3 items-center mt-2"
-          onPress={() => navigation.navigate('HomeworkList')}
-        >
-          <Text className="text-blue-600 font-bold">{t('view_full_homework')}</Text>
-        </TouchableOpacity>
-      )}
-    </View>
+        <View className="h-10" />
+      </ScrollView>
+    </SafeAreaView>
   );
 }

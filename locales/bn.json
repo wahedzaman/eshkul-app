@@ -80,5 +80,8 @@
   "thursday": "বৃহস্পতিবার",
   "friday": "শুক্রবার",
   "saturday": "শনিবার",
-  "email": "ইমেইল"
+  "email": "ইমেইল",
+  "view_full_routine": "পূর্ণ রুটিন",
+  "view_full_homework": "পূর্ণ হোমওয়ার্ক",
+  "view_full_calendar": "পূর্ণ "
 }

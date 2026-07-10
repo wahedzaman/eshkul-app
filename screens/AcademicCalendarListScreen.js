@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { FadeIn, FadeOut, LinearTransition } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 import AcademicCalendarService from '../services/AcademicCalendarService';
 
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -49,7 +49,7 @@ const EventItem = ({ day, date, title, description }) => (
     entering={FadeIn.duration(300)}
     exiting={FadeOut.duration(200)}
     layout={LinearTransition.springify().damping(16).stiffness(120)}
-    className="flex-row mb-4"
+    className="flex-row mb-4 mx-4"
   >
     {/* Date Column */}
     <View className="w-12 pt-1 mr-3 items-center">
@@ -65,9 +65,8 @@ const EventItem = ({ day, date, title, description }) => (
   </Animated.View>
 );
 
-export default function AcademicCalendarCard({ refreshTrigger }) {
+export default function AcademicCalendarListScreen({ navigation }) {
   const { t } = useTranslation();
-  const navigation = useNavigation();
   const [activeFilter, setActiveFilter] = useState('all');
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -85,7 +84,7 @@ export default function AcademicCalendarCard({ refreshTrigger }) {
 
   useEffect(() => {
     fetchEvents();
-  }, [fetchEvents, refreshTrigger]);
+  }, [fetchEvents]);
 
   const categorizedEvents = events.map(item => ({
     ...item,
@@ -100,48 +99,58 @@ export default function AcademicCalendarCard({ refreshTrigger }) {
   const currentMonth = getCurrentMonth(events);
 
   return (
-    <View className="bg-white rounded-[32px] p-6 mb-6 shadow-sm">
-      {/* Header */}
-      <View className="flex-row justify-between items-center mb-6">
-        <Text className="text-xl font-bold text-[#0f172a]">{t('academic_calendar')}</Text>
-        <TouchableOpacity className="flex-row items-center">
-          <Ionicons name="calendar-outline" size={18} color="#2563eb" className="mr-1" />
-          <Text className="text-blue-600 font-bold">{currentMonth}</Text>
+    <SafeAreaView className="flex-1 bg-gray-50">
+      <View className="flex-row items-center px-4 py-3 bg-white border-b border-gray-100">
+        <TouchableOpacity onPress={() => navigation.goBack()} className="p-1">
+          <Ionicons name="arrow-back" size={24} color="#0f172a" />
         </TouchableOpacity>
+        <Text className="flex-1 text-[#0f172a] font-bold text-lg text-center mr-8">
+          {t('academic_calendar') || 'Academic Calendar'}
+        </Text>
       </View>
 
-      {/* Filters */}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-6">
-        <FilterChip
-          label={t('all')}
-          isActive={activeFilter === 'all'}
-          onPress={() => setActiveFilter('all')}
-        />
-        <FilterChip
-          label={t('upcoming_exam')}
-          isActive={activeFilter === 'upcoming_exam'}
-          onPress={() => setActiveFilter('upcoming_exam')}
-        />
-        <FilterChip
-          label={t('holiday')}
-          isActive={activeFilter === 'holiday'}
-          onPress={() => setActiveFilter('holiday')}
-        />
-        <FilterChip
-          label={t('events')}
-          isActive={activeFilter === 'events'}
-          onPress={() => setActiveFilter('events')}
-        />
-      </ScrollView>
+      <View className="bg-white px-4 py-4 mb-2 shadow-sm">
+        <View className="flex-row justify-between items-center mb-4 px-2">
+          <Text className="text-sm font-bold text-gray-600 uppercase tracking-wide">
+             {activeFilter === 'all' ? t('all') : t(activeFilter)}
+          </Text>
+          <TouchableOpacity className="flex-row items-center">
+            <Ionicons name="calendar-outline" size={16} color="#2563eb" className="mr-1" />
+            <Text className="text-blue-600 font-bold">{currentMonth}</Text>
+          </TouchableOpacity>
+        </View>
 
-      {/* Events List */}
-      <View>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <FilterChip
+            label={t('all')}
+            isActive={activeFilter === 'all'}
+            onPress={() => setActiveFilter('all')}
+          />
+          <FilterChip
+            label={t('upcoming_exam')}
+            isActive={activeFilter === 'upcoming_exam'}
+            onPress={() => setActiveFilter('upcoming_exam')}
+          />
+          <FilterChip
+            label={t('holiday')}
+            isActive={activeFilter === 'holiday'}
+            onPress={() => setActiveFilter('holiday')}
+          />
+          <FilterChip
+            label={t('events')}
+            isActive={activeFilter === 'events'}
+            onPress={() => setActiveFilter('events')}
+          />
+        </ScrollView>
+      </View>
+
+      <ScrollView className="flex-1 pt-4">
         {loading ? (
           <ActivityIndicator size="large" color="#2563eb" className="py-8" />
         ) : filteredEvents.length === 0 ? (
           <Text className="text-gray-500 text-center py-8">{t('no_notifications')}</Text>
         ) : (
-          filteredEvents.slice(0, 5).map((item) => (
+          filteredEvents.map((item) => (
             <EventItem
               key={item.id}
               day={item._formattedDate.day}
@@ -151,15 +160,8 @@ export default function AcademicCalendarCard({ refreshTrigger }) {
             />
           ))
         )}
-      </View>
-      {filteredEvents.length > 5 && (
-        <TouchableOpacity 
-          className="border border-blue-500 rounded-full py-3 items-center mt-2"
-          onPress={() => navigation.navigate('AcademicCalendarList')}
-        >
-          <Text className="text-blue-600 font-bold">{t('view_full_calendar')}</Text>
-        </TouchableOpacity>
-      )}
-    </View>
+        <View className="h-10" />
+      </ScrollView>
+    </SafeAreaView>
   );
 }

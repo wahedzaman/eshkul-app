@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, ActivityIndicator, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { FadeIn, FadeOut, LinearTransition } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 import RoutineService from '../services/RoutineService';
 import ApiWrapper from '../constants/ApiWrapper';
 
@@ -23,7 +23,7 @@ const RoutineItem = ({ dayName, timeStart, timeEnd, subject, room, teacher, isAc
     entering={FadeIn.duration(300)}
     exiting={FadeOut.duration(200)}
     layout={LinearTransition.springify().damping(16).stiffness(120)}
-    className="flex-row mb-1"
+    className="flex-row mb-1 mx-4"
   >
     <View className="w-16 pt-1 mr-2 items-end">
       {dayName && <Text className="text-blue-500 font-bold text-[10px] mb-0.5">{dayName}</Text>}
@@ -93,16 +93,15 @@ function getTodayLabel() {
   return days[new Date().getDay()];
 }
 
-export default function ClassRoutineCard({ refreshTrigger }) {
+export default function ClassRoutineListScreen({ navigation }) {
   const { t } = useTranslation();
-  const navigation = useNavigation();
   const [activeFilter, setActiveFilter] = useState('today');
   const [fullRoutine, setFullRoutine] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchRoutine();
-  }, [refreshTrigger]);
+  }, []);
 
   const fetchRoutine = async () => {
     setLoading(true);
@@ -117,40 +116,53 @@ export default function ClassRoutineCard({ refreshTrigger }) {
   const activeIndex = activeFilter === 'today' ? getCurrentPeriodIndex(schedule) : -1;
 
   return (
-    <View className="bg-white rounded-[32px] p-6 mb-6 shadow-sm">
-      <View className="flex-row justify-between items-center mb-6">
-        <Text className="text-xl font-bold text-[#0f172a]">{t('class_routine')}</Text>
-        <TouchableOpacity className="flex-row items-center">
-          <Ionicons name="calendar-outline" size={18} color="#2563eb" className="mr-1" />
-          <Text className="text-blue-600 font-bold capitalize">{t(getTodayLabel())}</Text>
+    <SafeAreaView className="flex-1 bg-gray-50">
+      <View className="flex-row items-center px-4 py-3 bg-white border-b border-gray-100">
+        <TouchableOpacity onPress={() => navigation.goBack()} className="p-1">
+          <Ionicons name="arrow-back" size={24} color="#0f172a" />
         </TouchableOpacity>
+        <Text className="flex-1 text-[#0f172a] font-bold text-lg text-center mr-8">
+          {t('class_routine') || 'Class Routine'}
+        </Text>
       </View>
 
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-6">
-        <FilterChip
-          label={t('all')}
-          isActive={activeFilter === 'all'}
-          onPress={() => setActiveFilter('all')}
-        />
-        <FilterChip
-          label={t('today')}
-          isActive={activeFilter === 'today'}
-          onPress={() => setActiveFilter('today')}
-        />
-        <FilterChip
-          label={t('upcoming')}
-          isActive={activeFilter === 'upcoming'}
-          onPress={() => setActiveFilter('upcoming')}
-        />
-      </ScrollView>
+      <View className="bg-white px-4 py-4 mb-2 shadow-sm">
+        <View className="flex-row justify-between items-center mb-4 px-2">
+          <Text className="text-sm font-bold text-gray-600 uppercase tracking-wide">
+            {activeFilter === 'today' ? t('today') : t('all')}
+          </Text>
+          <TouchableOpacity className="flex-row items-center">
+            <Ionicons name="calendar-outline" size={16} color="#2563eb" className="mr-1" />
+            <Text className="text-blue-600 font-bold capitalize">{t(getTodayLabel())}</Text>
+          </TouchableOpacity>
+        </View>
 
-      <View>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <FilterChip
+            label={t('all')}
+            isActive={activeFilter === 'all'}
+            onPress={() => setActiveFilter('all')}
+          />
+          <FilterChip
+            label={t('today')}
+            isActive={activeFilter === 'today'}
+            onPress={() => setActiveFilter('today')}
+          />
+          <FilterChip
+            label={t('upcoming')}
+            isActive={activeFilter === 'upcoming'}
+            onPress={() => setActiveFilter('upcoming')}
+          />
+        </ScrollView>
+      </View>
+
+      <ScrollView className="flex-1 pt-4">
         {loading ? (
           <View className="py-8 items-center justify-center">
             <ActivityIndicator size="large" color="#2563eb" />
           </View>
         ) : schedule.length > 0 ? (
-          schedule.slice(0, 4).map((item, index, arr) => (
+          schedule.map((item, index, arr) => (
             <RoutineItem
               key={item.id}
               dayName={activeFilter !== 'today' ? t(item.dayName.toLowerCase()) : null}
@@ -168,16 +180,8 @@ export default function ClassRoutineCard({ refreshTrigger }) {
             <Text className="text-gray-500 font-medium">{t('no_routine_found')}</Text>
           </View>
         )}
-      </View>
-
-      {schedule.length > 4 && (
-        <TouchableOpacity 
-          className="border border-blue-500 rounded-full py-3 items-center mt-2"
-          onPress={() => navigation.navigate('ClassRoutineList')}
-        >
-          <Text className="text-blue-600 font-bold">{t('view_full_routine')}</Text>
-        </TouchableOpacity>
-      )}
-    </View>
+        <View className="h-10" />
+      </ScrollView>
+    </SafeAreaView>
   );
 }

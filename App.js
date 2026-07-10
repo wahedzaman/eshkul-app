@@ -5,6 +5,9 @@ import SplashScreen from './screens/SplashScreen';
 import LoginScreen from './screens/LoginScreen';
 import AppContainerScreen from './screens/AppContainerScreen';
 import StudentDetailsScreen from './screens/StudentDetailsScreen';
+import HomeworkListScreen from './screens/HomeworkListScreen';
+import ClassRoutineListScreen from './screens/ClassRoutineListScreen';
+import AcademicCalendarListScreen from './screens/AcademicCalendarListScreen';
 import "./global.css";
 import "./i18n"; // Import i18n config
 
@@ -18,6 +21,9 @@ export default function App() {
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="AppContainer" component={AppContainerScreen} />
         <Stack.Screen name="StudentDetails" component={StudentDetailsScreen} />
+        <Stack.Screen name="HomeworkList" component={HomeworkListScreen} />
+        <Stack.Screen name="ClassRoutineList" component={ClassRoutineListScreen} />
+        <Stack.Screen name="AcademicCalendarList" component={AcademicCalendarListScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

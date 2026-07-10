@@ -119,5 +119,13 @@
   "thursday": "Thursday",
   "friday": "Friday",
   "saturday": "Saturday",
-  "email": "Email"
+  "email": "Email",
+  "switch_account": "Switch Account",
+  "add_account": "Add Account",
+  "active_account": "Active",
+  "switching_account": "Switching account...",
+  "account_already_logged_in": "This account is already logged in.",
+  "student_label": "Student",
+  "teacher_label": "Teacher",
+  "employee_label": "Employee"
 }

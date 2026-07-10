@@ -4,6 +4,7 @@ import Strings from '../constants/Strings';
 import AppSession from './AppSession';
 import StorageManager from './StorageManager';
 import StudentService from './StudentService';
+import AccountManager from './AccountManager';
 
 class AuthService {
   static async login(username, password) {
@@ -31,14 +32,17 @@ class AuthService {
     await StorageManager.setItem(Strings.STORAGE_KEYS.USER_SESSION, response.data);
 
     // If student, fetch and persist details immediately during login
+    let studentData = null;
     if (response.data.UserType === Strings.USER_TYPES.STUDENT) {
       const studentRes = await StudentService.fetchAndPersistDetails(response.data.Id, response.data.Token);
       if (!studentRes.success) {
-        // Purge session data if profile fails to resolve
         await AppSession.clearSession();
         return { success: false, type: 'failed', error: 'student_details_failed' };
       }
+      studentData = await StorageManager.getItem(Strings.STORAGE_KEYS.STUDENT_DETAILS);
     }
+
+    await AccountManager.addAccount(response.data, studentData);
 
     return { success: true, data: response.data };
   }

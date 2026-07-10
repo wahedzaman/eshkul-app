@@ -2,6 +2,7 @@ import StorageManager from './StorageManager';
 import Strings from '../constants/Strings';
 import AppSession from './AppSession';
 import StudentService from './StudentService';
+import AccountManager from './AccountManager';
 
 class SplashService {
   static async checkSession() {
@@ -18,6 +19,7 @@ class SplashService {
       if (sessionData.UserType === Strings.USER_TYPES.STUDENT) {
         const studentRes = await StudentService.fetchAndPersistDetails(sessionData.Id, sessionData.Token);
         if (studentRes.success) {
+          await AccountManager.migrateIfNeeded();
           return true;
         } else {
           // If details fetch fails, reset session and clear storage
@@ -27,6 +29,7 @@ class SplashService {
       }
 
       // Non-student accounts proceed straight through
+      await AccountManager.migrateIfNeeded();
       return true;
     } catch (error) {
       console.error('SplashService checkSession Error:', error);

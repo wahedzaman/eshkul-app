@@ -83,5 +83,13 @@
   "email": "ইমেইল",
   "view_full_routine": "পূর্ণ রুটিন",
   "view_full_homework": "পূর্ণ হোমওয়ার্ক",
-  "view_full_calendar": "পূর্ণ "
+  "view_full_calendar": "পূর্ণ ",
+  "switch_account": "অ্যাকাউন্ট পরিবর্তন",
+  "add_account": "অ্যাকাউন্ট যোগ করুন",
+  "active_account": "সক্রিয়",
+  "switching_account": "অ্যাকাউন্ট পরিবর্তন হচ্ছে...",
+  "account_already_logged_in": "এই অ্যাকাউন্টে ইতোমধ্যে লগইন করা আছে।",
+  "student_label": "শিক্ষার্থী",
+  "teacher_label": "শিক্ষক",
+  "employee_label": "কর্মচারী"
 }

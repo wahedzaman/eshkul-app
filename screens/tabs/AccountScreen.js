@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Image, Modal } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
+import { CommonActions } from '@react-navigation/native';
 import AppSession from '../../services/AppSession';
+import AccountManager from '../../services/AccountManager';
 import ApiWrapper from '../../constants/ApiWrapper';
+import AccountSwitcherDialog from '../../components/AccountSwitcherDialog';
 
 const MenuItem = ({ icon, label, onPress, isLast, rightElement }) => (
   <TouchableOpacity
@@ -96,14 +99,42 @@ const ProfileHeader = ({ onPress }) => {
 export default function AccountScreen({ navigation }) {
   const { t } = useTranslation();
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isSwitcherVisible, setIsSwitcherVisible] = useState(false);
 
   const handleConfirmLogout = async () => {
     setIsModalVisible(false);
+    const currentId = AccountManager.getActiveAccountId();
+    const remaining = await AccountManager.removeAccount(currentId);
     await AppSession.clearSession();
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Login' }],
-    });
+
+    if (remaining.length > 0) {
+      const nextAccount = remaining[0];
+      await AccountManager.switchTo(nextAccount.id);
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: 'AppContainer' }],
+        })
+      );
+    } else {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Login' }],
+      });
+    }
+  };
+
+  const handleAccountSwitch = () => {
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'AppContainer' }],
+      })
+    );
+  };
+
+  const handleAddAccount = () => {
+    navigation.navigate('Login', { addAccount: true });
   };
 
   return (
@@ -112,18 +143,12 @@ export default function AccountScreen({ navigation }) {
         {/* Profile Header */}
         <ProfileHeader onPress={() => navigation.navigate('StudentDetails')} />
 
-        {/* General Section (No Title)
-        <MenuGroup>
-          <MenuItem icon="person-circle-outline" label={t('account')} />
-          <View className="h-[1px] bg-gray-100" />
-          <MenuItem icon="color-wand-outline" label={t('customization')} />
-        </MenuGroup> */}
-
         {/* Account Management */}
         <MenuGroup title={t('account_management')} >
           <MenuItem
             icon="people-outline"
             label={t('account_switching')}
+            onPress={() => setIsSwitcherVisible(true)}
             rightElement={
               <View className="flex-row items-center">
                 <Ionicons name="chevron-forward" size={20} color="#9ca3af" />
@@ -154,6 +179,13 @@ export default function AccountScreen({ navigation }) {
 
         <View className="h-20" />
       </ScrollView>
+
+      <AccountSwitcherDialog
+        visible={isSwitcherVisible}
+        onClose={() => setIsSwitcherVisible(false)}
+        onSwitch={handleAccountSwitch}
+        onAddAccount={handleAddAccount}
+      />
 
       <Modal
         animationType="slide"

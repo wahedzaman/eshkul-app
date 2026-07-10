@@ -4,18 +4,33 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import AuthService from '../services/AuthService';
+import AccountManager from '../services/AccountManager';
 
-export default function LoginScreen({ navigation }) {
+export default function LoginScreen({ navigation, route }) {
   const { t } = useTranslation();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  const isAddAccountMode = route?.params?.addAccount === true;
   const isFormValid = username.trim() !== '' && password.trim() !== '';
 
   const handleLogin = async () => {
     if (!isFormValid) return;
+
+    const existingAccounts = await AccountManager.getAccounts();
+    const alreadyLoggedIn = existingAccounts.find(
+      a => a.userName.toLowerCase() === username.trim().toLowerCase()
+    );
+    if (alreadyLoggedIn) {
+      Alert.alert(
+        t('failed'),
+        t('account_already_logged_in'),
+        [{ text: t('ok') }]
+      );
+      return;
+    }
 
     setIsLoading(true);
     try {
@@ -23,7 +38,11 @@ export default function LoginScreen({ navigation }) {
       setIsLoading(false);
 
       if (response.success) {
-        navigation.replace('AppContainer');
+        if (isAddAccountMode) {
+          navigation.goBack();
+        } else {
+          navigation.replace('AppContainer');
+        }
       } else {
         const errorMsg = response.type === 'failed' ? t('login_failed') : t('login_error');
         Alert.alert(
@@ -49,7 +68,6 @@ export default function LoginScreen({ navigation }) {
         className="flex-1"
       >
         <ScrollView contentContainerStyle={{ flexGrow: 1, marginTop: 50 }} className="px-6">
-          {/* Loading Modal */}
           <Modal transparent={true} visible={isLoading} animationType="fade">
             <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center' }}>
               <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 10 }}>
@@ -59,12 +77,20 @@ export default function LoginScreen({ navigation }) {
             </View>
           </Modal>
 
-          {/* Header */}
           <View className="flex-row items-center mt-4 mb-10">
-            <Text className="text-2xl font-bold text-[#0f5279]"></Text>
+            {isAddAccountMode && (
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                style={{ marginRight: 12 }}
+              >
+                <Ionicons name="arrow-back" size={24} color="#0f172a" />
+              </TouchableOpacity>
+            )}
+            {isAddAccountMode && (
+              <Text className="text-lg font-bold text-[#0f172a]">{t('add_account')}</Text>
+            )}
           </View>
 
-          {/* Logo */}
           <View className="items-center mb-10">
             <Image
               source={require('../assets/logo.png')}
@@ -73,9 +99,7 @@ export default function LoginScreen({ navigation }) {
             />
           </View>
 
-          {/* Form */}
           <View className="space-y-4">
-            {/* User ID Input */}
             <View className="flex-row items-center bg-white rounded-full px-6 py-4 border border-gray-100 shadow-sm">
               <Ionicons name="person-outline" size={20} color="#9ca3af" className="mr-3" />
               <TextInput
@@ -88,7 +112,6 @@ export default function LoginScreen({ navigation }) {
               />
             </View>
 
-            {/* Password Input */}
             <View className="flex-row items-center bg-white rounded-full px-6 py-4 border border-gray-100 shadow-sm mt-2">
               <Ionicons name="lock-closed-outline" size={20} color="#9ca3af" className="mr-3" />
               <TextInput
@@ -105,12 +128,10 @@ export default function LoginScreen({ navigation }) {
               </TouchableOpacity>
             </View>
 
-            {/* Forgot Password */}
             <TouchableOpacity className="items-end mt-2">
               <Text className="text-gray-500 text-sm font-medium">{t('forgot_password')}</Text>
             </TouchableOpacity>
 
-            {/* Login Button */}
             <TouchableOpacity
               onPress={handleLogin}
               disabled={!isFormValid}

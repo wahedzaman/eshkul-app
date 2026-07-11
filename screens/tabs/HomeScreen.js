@@ -7,6 +7,7 @@ import HomeworkCard from '../../components/HomeworkCard';
 import NewsAndNoticeCard from '../../components/NewsAndNoticeCard';
 import ClassRoutineCard from '../../components/ClassRoutineCard';
 import AcademicCalendarCard from '../../components/AcademicCalendarCard';
+import AppSession from '../../services/AppSession';
 
 export default function HomeScreen() {
   const { t } = useTranslation();
@@ -20,19 +21,34 @@ export default function HomeScreen() {
       setRefreshing(false);
     }, 2000);
   }, []);
-  
+
   return (
-    <ScrollView 
+    <ScrollView
       className="flex-1 bg-gray-50 px-4 pt-4"
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
     >
-      <BalanceCard refreshTrigger={refreshTrigger} />
-      <AttendanceCard refreshTrigger={refreshTrigger} />
-      <HomeworkCard refreshTrigger={refreshTrigger} />
+
+      {/* {AppSession.rights !== 1915 && (
+        <BalanceCard refreshTrigger={refreshTrigger} />
+      )} */}
+
+      {AppSession.rights !== 1911 && (
+        <AttendanceCard refreshTrigger={refreshTrigger} />
+      )}
+
+      {AppSession.rights !== 1913 && (
+        <HomeworkCard refreshTrigger={refreshTrigger} />
+      )}
+
       <NewsAndNoticeCard refreshTrigger={refreshTrigger} />
-      <ClassRoutineCard refreshTrigger={refreshTrigger} />
+
+      {AppSession.rights !== 1912 && (
+        <ClassRoutineCard refreshTrigger={refreshTrigger} />
+      )}
+
+
       <AcademicCalendarCard refreshTrigger={refreshTrigger} />
       {/* Add padding at bottom for scroll */}
       <View className="h-20" />

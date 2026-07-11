@@ -1,0 +1,106 @@
+{
+    "11": [
+        {
+            "Right ID": 1911,
+            "Feature Name": "Attendance"
+        },
+        {
+            "Right ID": 1912,
+            "Feature Name": "My Timetable"
+        },
+        {
+            "Right ID": 1913,
+            "Feature Name": "Home Work"
+        },
+        {
+            "Right ID": 1914,
+            "Feature Name": "Exam & Result"
+        },
+        {
+            "Right ID": 1915,
+            "Feature Name": "Fees & Payments"
+        },
+        {
+            "Right ID": 1916,
+            "Feature Name": "Library"
+        },
+        {
+            "Right ID": 1917,
+            "Feature Name": "Messanger"
+        },
+        {
+            "Right ID": 1919,
+            "Feature Name": "Leave"
+        },
+        {
+            "Right ID": 1921,
+            "Feature Name": "Badges/Cards"
+        }
+    ],
+    "13/14": [
+        {
+            "Right ID": 3210,
+            "Feature Name": "Self Service"
+        },
+        {
+            "Right ID": 3211,
+            "Feature Name": "Self Service"
+        },
+        {
+            "Right ID": 3212,
+            "Feature Name": "Self Service"
+        },
+        {
+            "Right ID": 3215,
+            "Feature Name": "Self Service"
+        },
+        {
+            "Right ID": 1013,
+            "Feature Name": "Students"
+        },
+        {
+            "Right ID": 3216,
+            "Feature Name": "Employee"
+        },
+        {
+            "Right ID": 1210,
+            "Feature Name": "Attendance"
+        },
+        {
+            "Right ID": 1211,
+            "Feature Name": "Attendance_Report"
+        },
+        {
+            "Right ID": 1211,
+            "Feature Name": "Attendance Dashbord"
+        },
+        {
+            "Right ID": 2916,
+            "Feature Name": "My Timetable"
+        },
+        {
+            "Right ID": 2410,
+            "Feature Name": "Home Work"
+        },
+        {
+            "Right ID": 1813,
+            "Feature Name": "Library"
+        },
+        {
+            "Right ID": 3410,
+            "Feature Name": "Messenger"
+        },
+        {
+            "Right ID": 1713,
+            "Feature Name": "Marks Entry (Commented)"
+        },
+        {
+            "Right ID": 1713,
+            "Feature Name": "Exam Remarks (Commented)"
+        },
+        {
+            "Right ID": 1717,
+            "Feature Name": "Exam Reports (Commented)"
+        }
+    ]
+}

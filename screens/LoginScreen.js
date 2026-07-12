@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, ScrollView, KeyboardAvoidingView, Platform, Modal, ActivityIndicator, Alert } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Image, Platform, Modal, ActivityIndicator, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import AuthService from '../services/AuthService';
 import AccountManager from '../services/AccountManager';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function LoginScreen({ navigation, route }) {
   const { t } = useTranslation();
@@ -12,6 +13,7 @@ export default function LoginScreen({ navigation, route }) {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const passwordRef = useRef(null);
 
   const isAddAccountMode = route?.params?.addAccount === true;
   const isFormValid = username.trim() !== '' && password.trim() !== '';
@@ -63,11 +65,13 @@ export default function LoginScreen({ navigation, route }) {
 
   return (
     <SafeAreaView className="flex-1 bg-gray-50">
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        className="flex-1"
-      >
-        <ScrollView contentContainerStyle={{ flexGrow: 1, marginTop: 50 }} className="px-6">
+        <KeyboardAwareScrollView 
+          contentContainerStyle={{ flexGrow: 1, marginTop: 50, paddingBottom: 50 }} 
+          className="px-6"
+          keyboardShouldPersistTaps="handled"
+          enableOnAndroid={true}
+          extraScrollHeight={Platform.OS === 'ios' ? 40 : 80}
+        >
           <Modal transparent={true} visible={isLoading} animationType="fade">
             <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center' }}>
               <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 10 }}>
@@ -109,12 +113,16 @@ export default function LoginScreen({ navigation, route }) {
                 autoCapitalize="none"
                 style={{ flex: 1, color: '#374151' }}
                 placeholderTextColor="#9ca3af"
+                returnKeyType="next"
+                blurOnSubmit={false}
+                onSubmitEditing={() => passwordRef.current?.focus()}
               />
             </View>
 
             <View className="flex-row items-center bg-white rounded-full px-6 py-4 border border-gray-100 shadow-sm mt-2">
               <Ionicons name="lock-closed-outline" size={20} color="#9ca3af" className="mr-3" />
               <TextInput
+                ref={passwordRef}
                 placeholder={t('password')}
                 value={password}
                 onChangeText={setPassword}
@@ -122,6 +130,8 @@ export default function LoginScreen({ navigation, route }) {
                 autoCapitalize="none"
                 style={{ flex: 1, color: '#374151' }}
                 placeholderTextColor="#9ca3af"
+                returnKeyType="done"
+                onSubmitEditing={handleLogin}
               />
               <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
                 <Ionicons name={showPassword ? "eye-off-outline" : "eye-outline"} size={20} color="#9ca3af" />
@@ -137,8 +147,7 @@ export default function LoginScreen({ navigation, route }) {
               <Text className="text-white font-bold text-lg">{t('login')}</Text>
             </TouchableOpacity>
           </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+        </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, Platform, Modal, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, Platform, Modal, ActivityIndicator, Alert, findNodeHandle } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
@@ -16,6 +16,7 @@ export default function ChangePasswordScreen({ navigation }) {
     
     const newPasswordRef = useRef(null);
     const confirmPasswordRef = useRef(null);
+    const scrollRef = useRef(null);
 
     const isFormValid = currentPassword.trim() !== '' && newPassword.trim() !== '' && confirmPassword.trim() !== '' && newPassword === confirmPassword;
     const handleSubmit = () => {
@@ -46,6 +47,7 @@ export default function ChangePasswordScreen({ navigation }) {
                     </Text>
                 </View>
                 <KeyboardAwareScrollView 
+                    ref={scrollRef}
                     contentContainerStyle={{ flexGrow: 1, paddingBottom: 50 }} 
                     className="px-6 pt-6"
                     keyboardShouldPersistTaps="handled"
@@ -80,7 +82,13 @@ export default function ChangePasswordScreen({ navigation }) {
                                 placeholderTextColor="#9ca3af"
                                 returnKeyType="next"
                                 blurOnSubmit={false}
-                                onSubmitEditing={() => newPasswordRef.current?.focus()}
+                                onSubmitEditing={() => {
+                                    newPasswordRef.current?.focus();
+                                    setTimeout(() => {
+                                        const node = findNodeHandle(newPasswordRef.current);
+                                        if (node) scrollRef.current?.scrollToFocusedInput(node);
+                                    }, 50);
+                                }}
                             />
                             <TouchableOpacity onPress={() => setShowCurrent(!showCurrent)}>
                                 <Ionicons name={showCurrent ? "eye-off-outline" : "eye-outline"} size={20} color="#9ca3af" />
@@ -99,7 +107,13 @@ export default function ChangePasswordScreen({ navigation }) {
                                 placeholderTextColor="#9ca3af"
                                 returnKeyType="next"
                                 blurOnSubmit={false}
-                                onSubmitEditing={() => confirmPasswordRef.current?.focus()}
+                                onSubmitEditing={() => {
+                                    confirmPasswordRef.current?.focus();
+                                    setTimeout(() => {
+                                        const node = findNodeHandle(confirmPasswordRef.current);
+                                        if (node) scrollRef.current?.scrollToFocusedInput(node);
+                                    }, 50);
+                                }}
                             />
                             <TouchableOpacity onPress={() => setShowNew(!showNew)}>
                                 <Ionicons name={showNew ? "eye-off-outline" : "eye-outline"} size={20} color="#9ca3af" />

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, Platform, Modal, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, Platform, Modal, ActivityIndicator, Alert, findNodeHandle } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
@@ -14,6 +14,7 @@ export default function LoginScreen({ navigation, route }) {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const passwordRef = useRef(null);
+  const scrollRef = useRef(null);
 
   const isAddAccountMode = route?.params?.addAccount === true;
   const isFormValid = username.trim() !== '' && password.trim() !== '';
@@ -66,6 +67,7 @@ export default function LoginScreen({ navigation, route }) {
   return (
     <SafeAreaView className="flex-1 bg-gray-50">
         <KeyboardAwareScrollView 
+          ref={scrollRef}
           contentContainerStyle={{ flexGrow: 1, marginTop: 50, paddingBottom: 50 }} 
           className="px-6"
           keyboardShouldPersistTaps="handled"
@@ -115,7 +117,13 @@ export default function LoginScreen({ navigation, route }) {
                 placeholderTextColor="#9ca3af"
                 returnKeyType="next"
                 blurOnSubmit={false}
-                onSubmitEditing={() => passwordRef.current?.focus()}
+                onSubmitEditing={() => {
+                  passwordRef.current?.focus();
+                  setTimeout(() => {
+                    const node = findNodeHandle(passwordRef.current);
+                    if (node) scrollRef.current?.scrollToFocusedInput(node);
+                  }, 50);
+                }}
               />
             </View>
 

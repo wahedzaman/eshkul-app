@@ -180,6 +180,12 @@ export default function AccountScreen({ navigation }) {
               </View>
             }
           />
+          <View className="h-[1px] bg-gray-100" />
+          <MenuItem
+            icon="lock-closed-outline"
+            label={t('change_password')}
+            onPress={() => navigation.navigate('ChangePassword')}
+          />
         </MenuGroup>
 
         {/* Support & FAQs */}

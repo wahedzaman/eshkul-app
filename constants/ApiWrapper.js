@@ -4,6 +4,8 @@ export default {
   API_CONTENT_URL_PREFIX: 'https://content.eshkul.com',
   ENDPOINTS: {
     LOGIN: '/api/auth/Login',
+    PASSWORD_CHANGE: '/api/usersecurity/passwordchange',
+    PASSWORD_CHANGE_CONFIRM: '/api/Cache/CacheUserInfo',
     STUDENT_DETAILS: '/api/student/details',
     EMPLOYEE_DETAILS: '/api/employee/details',
     NOTIFICATIONS: '/api/Notification/DetailsByUserId',

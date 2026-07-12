@@ -109,5 +109,12 @@
   "birth_city": "জন্ম শহর:",
   "birth_country": "জন্ম দেশ:",
   "no_employee_details": "কর্মচারীর তথ্য পাওয়া যায়নি",
-  "details": "বিবরণ"
+  "details": "বিবরণ",
+  "change_password": "পাসওয়ার্ড পরিবর্তন",
+  "current_password": "বর্তমান পাসওয়ার্ড",
+  "new_password": "নতুন পাসওয়ার্ড",
+  "confirm_password": "পাসওয়ার্ড নিশ্চিত করুন",
+  "password_change_success": "পাসওয়ার্ড সফলভাবে পরিবর্তন করা হয়েছে।",
+  "submitting": "জমা দেওয়া হচ্ছে...",
+  "submit": "জমা দিন"
 }

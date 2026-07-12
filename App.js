@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SplashScreen from './screens/SplashScreen';
 import LoginScreen from './screens/LoginScreen';
+import ChangePasswordScreen from './screens/ChangePasswordScreen';
 import AppContainerScreen from './screens/AppContainerScreen';
 import StudentDetailsScreen from './screens/StudentDetailsScreen';
 import EmployeeDetailsScreen from './screens/EmployeeDetailsScreen';
@@ -20,6 +21,7 @@ export default function App() {
       <Stack.Navigator initialRouteName="Splash" screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
         <Stack.Screen name="AppContainer" component={AppContainerScreen} />
         <Stack.Screen name="StudentDetails" component={StudentDetailsScreen} />
         <Stack.Screen name="EmployeeDetails" component={EmployeeDetailsScreen} />

@@ -145,5 +145,12 @@
   "birth_city": "Birth City:",
   "birth_country": "Birth Country:",
   "no_employee_details": "No employee details available",
-  "details": "Details"
+  "details": "Details",
+  "change_password": "Change Password",
+  "current_password": "Current Password",
+  "new_password": "New Password",
+  "confirm_password": "Confirm Password",
+  "password_change_success": "Password changed successfully.",
+  "submitting": "Submitting...",
+  "submit": "Submit"
 }

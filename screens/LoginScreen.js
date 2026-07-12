@@ -128,10 +128,6 @@ export default function LoginScreen({ navigation, route }) {
               </TouchableOpacity>
             </View>
 
-            <TouchableOpacity className="items-end mt-2">
-              <Text className="text-gray-500 text-sm font-medium">{t('forgot_password')}</Text>
-            </TouchableOpacity>
-
             <TouchableOpacity
               onPress={handleLogin}
               disabled={!isFormValid}

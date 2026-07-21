@@ -151,6 +151,7 @@
   "new_password": "New Password",
   "confirm_password": "Confirm Password",
   "password_change_success": "Password changed successfully.",
+  "password_change_failed": "Failed to change password. Please check your current password.",
   "submitting": "Submitting...",
   "submit": "Submit"
 }

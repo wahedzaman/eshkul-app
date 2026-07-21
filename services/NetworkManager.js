@@ -44,7 +44,15 @@ class NetworkManager {
         return { success: false, error: 'network_error', statusCode: response.status };
       }
 
-      const json = await response.json();
+      const text = await response.text();
+      let json = null;
+      if (text && text.trim().length > 0) {
+        try {
+          json = JSON.parse(text);
+        } catch (e) {
+          json = text;
+        }
+      }
 
       if (NetworkManager.debugRequest) {
         console.log('--- [Network Response (Success)] ---');
@@ -52,7 +60,7 @@ class NetworkManager {
         console.log('------------------------------------');
       }
 
-      return { success: true, data: json };
+      return { success: true, data: json, statusCode: response.status };
     } catch (error) {
       if (NetworkManager.debugRequest) {
         console.log('--- [Network Response (Exception)] ---');
@@ -98,7 +106,15 @@ class NetworkManager {
         return { success: false, error: 'network_error', statusCode: response.status };
       }
 
-      const json = await response.json();
+      const text = await response.text();
+      let json = null;
+      if (text && text.trim().length > 0) {
+        try {
+          json = JSON.parse(text);
+        } catch (e) {
+          json = text;
+        }
+      }
 
       if (NetworkManager.debugRequest) {
         console.log('--- [Network Response (Success)] ---');
@@ -106,7 +122,7 @@ class NetworkManager {
         console.log('------------------------------------');
       }
 
-      return { success: true, data: json };
+      return { success: true, data: json, statusCode: response.status };
     } catch (error) {
       if (NetworkManager.debugRequest) {
         console.log('--- [Network Response (Exception)] ---');

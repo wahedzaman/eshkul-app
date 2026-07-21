@@ -55,6 +55,53 @@ class AuthService {
 
     return { success: true, data: response.data };
   }
+
+  static async changePassword(currentPassword, newPassword, confirmPassword) {
+    const headers = {
+      'Authorization': AppSession.token || '',
+    };
+
+    const payload = {
+      PasswordHash: currentPassword,
+      NewPassword: newPassword,
+      ConfirmPassword: confirmPassword,
+    };
+
+    const response = await NetworkManager.post(
+      ApiWrapper.ENDPOINTS.PASSWORD_CHANGE,
+      payload,
+      headers
+    );
+
+    if (response.success && response.statusCode === 201) {
+      const confirmParams = {
+        userId: AppSession.id,
+        instituteId: Strings.DEFAULT_INSTITUTE_ID,
+      };
+
+      const confirmResponse = await NetworkManager.get(
+        ApiWrapper.ENDPOINTS.PASSWORD_CHANGE_CONFIRM,
+        confirmParams,
+        headers
+      );
+
+      if (confirmResponse.success && confirmResponse.statusCode === 204) {
+        return { success: true };
+      }
+
+      return {
+        success: false,
+        error: confirmResponse.error || 'confirm_failed',
+        statusCode: confirmResponse.statusCode,
+      };
+    }
+
+    return {
+      success: false,
+      error: response.error || 'change_failed',
+      statusCode: response.statusCode,
+    };
+  }
 }
 
 export default AuthService;

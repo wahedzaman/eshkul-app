@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import AuthService from '../services/AuthService';
 export default function ChangePasswordScreen({ navigation }) {
     const { t } = useTranslation();
     const [currentPassword, setCurrentPassword] = useState('');
@@ -19,22 +20,38 @@ export default function ChangePasswordScreen({ navigation }) {
     const scrollRef = useRef(null);
 
     const isFormValid = currentPassword.trim() !== '' && newPassword.trim() !== '' && confirmPassword.trim() !== '' && newPassword === confirmPassword;
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (!isFormValid) return;
         setIsLoading(true);
-        setTimeout(() => {
+        try {
+            const response = await AuthService.changePassword(currentPassword, newPassword, confirmPassword);
+            setIsLoading(false);
+            if (response.success) {
+                Alert.alert(
+                    t('success'),
+                    t('password_change_success'),
+                    [
+                        {
+                            text: t('ok'),
+                            onPress: () => navigation.goBack(),
+                        }
+                    ]
+                );
+            } else {
+                Alert.alert(
+                    t('failed'),
+                    t('password_change_failed'),
+                    [{ text: t('ok') }]
+                );
+            }
+        } catch (error) {
             setIsLoading(false);
             Alert.alert(
-                t('success'),
-                t('password_change_success'),
-                [
-                    {
-                        text: t('ok'),
-                        onPress: () => navigation.goBack(),
-                    }
-                ]
+                t('error'),
+                t('password_change_failed'),
+                [{ text: t('ok') }]
             );
-        }, 1500);
+        }
     };
     return (
         <SafeAreaView className="flex-1 bg-gray-50">

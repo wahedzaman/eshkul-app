@@ -6,6 +6,7 @@ import Employee from '../models/Employee';
 import EmployeeAddress from '../models/EmployeeAddress';
 import StudentService from './StudentService';
 import EmployeeService from './EmployeeService';
+import CacheService from './CacheService';
 
 class AccountManager {
   static async getAccounts() {
@@ -81,6 +82,8 @@ class AccountManager {
         await StorageManager.setItem(Strings.STORAGE_KEYS.EMPLOYEE_DETAILS, target.employeeData);
       }
     }
+
+    await CacheService.fetchAndPersistLoginCache(target.sessionData.Token);
 
     return { success: true };
   }

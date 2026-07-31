@@ -6,6 +6,7 @@ import StorageManager from './StorageManager';
 import StudentService from './StudentService';
 import EmployeeService from './EmployeeService';
 import AccountManager from './AccountManager';
+import CacheService from './CacheService';
 
 class AuthService {
   static async login(username, password) {
@@ -50,6 +51,8 @@ class AuthService {
       }
       employeeData = await StorageManager.getItem(Strings.STORAGE_KEYS.EMPLOYEE_DETAILS);
     }
+
+    await CacheService.fetchAndPersistLoginCache(response.data.Token);
 
     await AccountManager.addAccount(response.data, studentData, employeeData);
 

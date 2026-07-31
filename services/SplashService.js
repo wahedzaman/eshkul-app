@@ -4,6 +4,7 @@ import AppSession from './AppSession';
 import StudentService from './StudentService';
 import EmployeeService from './EmployeeService';
 import AccountManager from './AccountManager';
+import CacheService from './CacheService';
 
 class SplashService {
   static async checkSession() {
@@ -20,6 +21,7 @@ class SplashService {
       if (sessionData.UserType === Strings.USER_TYPES.STUDENT) {
         const studentRes = await StudentService.fetchAndPersistDetails(sessionData.Id, sessionData.Token);
         if (studentRes.success) {
+          await CacheService.fetchAndPersistLoginCache(sessionData.Token);
           await AccountManager.migrateIfNeeded();
           return true;
         } else {
@@ -30,6 +32,7 @@ class SplashService {
       } else {
         const employeeRes = await EmployeeService.fetchAndPersistDetails(sessionData.Id, sessionData.Token);
         if (employeeRes.success) {
+          await CacheService.fetchAndPersistLoginCache(sessionData.Token);
           await AccountManager.migrateIfNeeded();
           return true;
         } else {

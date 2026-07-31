@@ -19,6 +19,7 @@ class AppSession {
     this.student = null;
     this.employee = null;
     this.employeeAddresses = [];
+    this.academicSessionId = null;
 
     AppSession.instance = this;
   }
@@ -68,6 +69,11 @@ class AppSession {
             this.employeeAddresses = (employeeData.Addresses || []).map(a => new EmployeeAddress(a));
           }
         }
+        
+        const sessionId = await StorageManager.getItem(Strings.STORAGE_KEYS.ACADEMIC_SESSION_ID);
+        if (sessionId) {
+          this.academicSessionId = sessionId;
+        }
         return true;
       }
     } catch (error) {
@@ -87,10 +93,12 @@ class AppSession {
     this.student = null;
     this.employee = null;
     this.employeeAddresses = [];
+    this.academicSessionId = null;
     try {
       await StorageManager.removeItem(Strings.STORAGE_KEYS.USER_SESSION);
       await StorageManager.removeItem(Strings.STORAGE_KEYS.STUDENT_DETAILS);
       await StorageManager.removeItem(Strings.STORAGE_KEYS.EMPLOYEE_DETAILS);
+      await StorageManager.removeItem(Strings.STORAGE_KEYS.ACADEMIC_SESSION_ID);
     } catch (error) {
       console.error('AppSession clearSession Error:', error);
     }

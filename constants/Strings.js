@@ -6,6 +6,7 @@ export default {
     STUDENT_DETAILS: 'student_details',
     EMPLOYEE_DETAILS: 'employee_details',
     MULTI_ACCOUNTS: 'multi_accounts',
+    ACADEMIC_SESSION_ID: 'academic_session_id',
   },
   USER_TYPES: {
     STUDENT: 11,  

@@ -13,7 +13,7 @@ class NetworkManager {
 
   static async post(endpoint, data = {}, headers = {}, customBaseUrl = null) {
     const url = this.getUrl(endpoint, customBaseUrl);
-    
+
     const requestHeaders = {
       'Content-Type': 'application/json',
       ...headers,
@@ -38,6 +38,7 @@ class NetworkManager {
       if (!response.ok) {
         if (NetworkManager.debugRequest) {
           console.log('--- [Network Response (Error)] ---');
+          console.log(`URL: ${url}`);
           console.log(`Status: ${response.status}`);
           console.log('----------------------------------');
         }
@@ -56,7 +57,8 @@ class NetworkManager {
 
       if (NetworkManager.debugRequest) {
         console.log('--- [Network Response (Success)] ---');
-        console.log('Received Data:', JSON.stringify(json, null, 2));
+        console.log(`URL: ${url}`);
+        // console.log('Received Data:', JSON.stringify(json, null, 2));
         console.log('------------------------------------');
       }
 
@@ -64,6 +66,7 @@ class NetworkManager {
     } catch (error) {
       if (NetworkManager.debugRequest) {
         console.log('--- [Network Response (Exception)] ---');
+        console.log(`URL: ${url}`);
         console.log('Message:', error.message);
         console.log('--------------------------------------');
       }
@@ -74,7 +77,7 @@ class NetworkManager {
 
   static async get(endpoint, params = {}, headers = {}, customBaseUrl = null) {
     let url = this.getUrl(endpoint, customBaseUrl);
-    
+
     const queryKeys = Object.keys(params);
     if (queryKeys.length > 0) {
       const queryString = queryKeys
@@ -100,6 +103,7 @@ class NetworkManager {
       if (!response.ok) {
         if (NetworkManager.debugRequest) {
           console.log('--- [Network Response (Error)] ---');
+          console.log(`URL: ${url}`);
           console.log(`Status: ${response.status}`);
           console.log('----------------------------------');
         }
@@ -118,7 +122,8 @@ class NetworkManager {
 
       if (NetworkManager.debugRequest) {
         console.log('--- [Network Response (Success)] ---');
-        console.log('Received Data:', JSON.stringify(json, null, 2));
+        console.log(`URL: ${url}`);
+        // console.log('Received Data:', JSON.stringify(json, null, 2));
         console.log('------------------------------------');
       }
 
@@ -126,6 +131,7 @@ class NetworkManager {
     } catch (error) {
       if (NetworkManager.debugRequest) {
         console.log('--- [Network Response (Exception)] ---');
+        console.log(`URL: ${url}`);
         console.log('Message:', error.message);
         console.log('--------------------------------------');
       }

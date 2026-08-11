@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Eshkul",
+    "name": "Sir John Wilson School",
     "slug": "Eshkul",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -14,14 +14,14 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.eshkul.eshkul"
+      "bundleIdentifier": "io.cordova.eshkulsjws"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.eshkul.eshkul",
+      "package": "io.cordova.eshkulsjws",
       "edgeToEdgeEnabled": true
     },
     "web": {

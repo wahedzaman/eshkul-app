@@ -1,0 +1,19 @@
+{
+  "appName": "Eshkul",
+  "appNameBn": "ইশকুল",
+  "slug": "Eshkul",
+  "bundleIdentifier": "com.eshkul.eshkul",
+  "packageName": "com.eshkul.eshkul",
+  "website": "https://eshkul.com",
+  "supportEmail": "support@eshkul.com",
+  "defaultInstituteId": 95,
+  "colors": {
+    "primary": "#0f5279",
+    "secondary": "#0f172a",
+    "brand": "#2563eb",
+    "accent": "#ff7f50"
+  },
+  "firebase": {
+    "enabled": false
+  }
+}

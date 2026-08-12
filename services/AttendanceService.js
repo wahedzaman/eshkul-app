@@ -3,11 +3,25 @@ import ApiWrapper from '../constants/ApiWrapper';
 import AppSession from './AppSession';
 
 class AttendanceService {
-  static async fetchAttendanceReport(startDateTime = null, studentId = null) {
+  static async fetchAttendanceReport(startDateTime = null, endDateTime = null, studentId = null) {
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const formatDate = (date) => {
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = months[date.getMonth()];
+      const year = date.getFullYear();
+      return `${day}-${month}-${year}`;
+    };
+
+    const now = new Date();
+
+    if (!endDateTime) {
+      endDateTime = formatDate(now);
+    }
+
     if (!startDateTime) {
-      const now = new Date();
-      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-      startDateTime = `01-${months[now.getMonth()]}-${now.getFullYear()}`;
+      const startDateObj = new Date(now);
+      startDateObj.setDate(now.getDate() - 9);
+      startDateTime = formatDate(startDateObj);
     }
 
     if (!studentId && AppSession.student) {
@@ -21,7 +35,7 @@ class AttendanceService {
 
     const response = await NetworkManager.get(
       ApiWrapper.ENDPOINTS.ATTENDANCE,
-      { startDateTime, studentId },
+      { startDateTime, endDateTime, studentId },
       headers,
       ApiWrapper.APP_API_BASE_URL
     );

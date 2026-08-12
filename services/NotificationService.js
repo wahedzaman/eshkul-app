@@ -6,15 +6,25 @@ import Notification from '../models/Notification';
 class NotificationService {
   static async fetchNotifications() {
     const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
-    const tDate = `${year}-${month}-${day}`;
+
+    const fromDateObj = new Date(today);
+    fromDateObj.setMonth(fromDateObj.getMonth() - 3);
+    const fYear = fromDateObj.getFullYear();
+    const fMonth = String(fromDateObj.getMonth() + 1).padStart(2, '0');
+    const fDay = String(fromDateObj.getDate()).padStart(2, '0');
+    const fDate = `${fYear}-${fMonth}-${fDay}`;
+
+    const toDateObj = new Date(today);
+    toDateObj.setMonth(toDateObj.getMonth() + 3);
+    const tYear = toDateObj.getFullYear();
+    const tMonth = String(toDateObj.getMonth() + 1).padStart(2, '0');
+    const tDay = String(toDateObj.getDate()).padStart(2, '0');
+    const tDate = `${tYear}-${tMonth}-${tDay}`;
 
     const params = {
       employeeId: AppSession.id || 304396,
-      fDate: tDate,
-      // tDate: tDate,
+      fDate: fDate,
+      tDate: tDate,
       notificationTypeId: 103,
     };
 

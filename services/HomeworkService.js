@@ -5,34 +5,28 @@ import Homework from '../models/Homework';
 
 class HomeworkService {
   static async fetchHomework(startDate, endDate) {
-    // If dates are not provided, default to a reasonable range like last 7 days to next 7 days
-    if (!startDate || !endDate) {
-      const today = new Date();
+    const formatDate = (date) => {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    };
 
-      const dayOfWeek = today.getDay(); // 0 (Sunday) to 6 (Saturday)
+    const today = new Date();
 
-      const start = new Date(today);
-      start.setDate(today.getDate() - dayOfWeek);
+    if (!endDate) {
+      endDate = formatDate(today);
+    }
 
-      const end = new Date(today);
-      end.setDate(today.getDate() + (6 - dayOfWeek));
-
-      const formatDate = (date) => {
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
-      };
-
-      if (!startDate) startDate = formatDate(start);
-      if (!endDate) endDate = formatDate(end);
+    if (!startDate) {
+      const startDateObj = new Date(today);
+      startDateObj.setDate(today.getDate() - 6);
+      startDate = formatDate(startDateObj);
     }
 
     const params = {
-      // startDate: startDate,
-      // endDate: endDate,
-      startDate: '2026-06-17',
-      endDate: '2026-07-23',
+      startDate: startDate,
+      endDate: endDate,
     };
 
     const headers = {

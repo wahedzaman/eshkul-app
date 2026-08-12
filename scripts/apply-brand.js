@@ -110,14 +110,14 @@ function updateColors(config) {
 }
 
 function updateStrings(config) {
-  if (config.defaultInstituteId === undefined) return;
+  if (!config.groupCode) return;
 
   const filePath = path.join(ROOT, 'constants', 'Strings.js');
   let content = fs.readFileSync(filePath, 'utf8');
 
   content = content.replace(
-    /(^\s+DEFAULT_INSTITUTE_ID:\s*)\d+/m,
-    `$1${config.defaultInstituteId}`
+    /(^\s+GROUP_CODE:\s*)'[^']*'/m,
+    `$1'${config.groupCode}'`
   );
 
   fs.writeFileSync(filePath, content);

@@ -11,7 +11,7 @@ import CacheService from './CacheService';
 class AuthService {
   static async login(username, password) {
     const payload = {
-      InstituteId: Strings.DEFAULT_INSTITUTE_ID,
+      InstituteId: AppSession.instituteId,
       UserName: username,
       Password: password,
     };
@@ -79,7 +79,7 @@ class AuthService {
     if (response.success && response.statusCode === 201) {
       const confirmParams = {
         userId: AppSession.id,
-        instituteId: Strings.DEFAULT_INSTITUTE_ID,
+        instituteId: AppSession.instituteId,
       };
 
       const confirmResponse = await NetworkManager.get(

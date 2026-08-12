@@ -3,6 +3,7 @@ import Strings from '../constants/Strings';
 import Student from '../models/Student';
 import Employee from '../models/Employee';
 import EmployeeAddress from '../models/EmployeeAddress';
+import Institute from '../models/Institute';
 
 class AppSession {
   constructor() {
@@ -20,8 +21,13 @@ class AppSession {
     this.employee = null;
     this.employeeAddresses = [];
     this.academicSessionId = null;
+    this.instituteCache = [];
 
     AppSession.instance = this;
+  }
+
+  get instituteId() {
+    return this.instituteCache[0]?.id ?? null;
   }
 
   setSession(data) {
@@ -50,6 +56,10 @@ class AppSession {
     this.employeeAddresses = addresses;
   }
 
+  setInstituteCache(institutes) {
+    this.instituteCache = institutes;
+  }
+
   async loadSession() {
     try {
       const data = await StorageManager.getItem(Strings.STORAGE_KEYS.USER_SESSION);
@@ -74,6 +84,12 @@ class AppSession {
         if (sessionId) {
           this.academicSessionId = sessionId;
         }
+
+        const cachedInstitutes = await StorageManager.getItem(Strings.STORAGE_KEYS.INSTITUTE_CACHE);
+        if (Array.isArray(cachedInstitutes) && cachedInstitutes.length > 0) {
+          this.instituteCache = cachedInstitutes.map(i => new Institute(i));
+        }
+
         return true;
       }
     } catch (error) {
@@ -94,11 +110,13 @@ class AppSession {
     this.employee = null;
     this.employeeAddresses = [];
     this.academicSessionId = null;
+    this.instituteCache = [];
     try {
       await StorageManager.removeItem(Strings.STORAGE_KEYS.USER_SESSION);
       await StorageManager.removeItem(Strings.STORAGE_KEYS.STUDENT_DETAILS);
       await StorageManager.removeItem(Strings.STORAGE_KEYS.EMPLOYEE_DETAILS);
       await StorageManager.removeItem(Strings.STORAGE_KEYS.ACADEMIC_SESSION_ID);
+      await StorageManager.removeItem(Strings.STORAGE_KEYS.INSTITUTE_CACHE);
     } catch (error) {
       console.error('AppSession clearSession Error:', error);
     }

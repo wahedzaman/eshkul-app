@@ -2,7 +2,7 @@
   "expo": {
     "name": "Sir John Wilson School",
     "slug": "Eshkul",
-    "version": "1.0.0",
+    "version": "2.1.63",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -23,9 +23,13 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "io.cordova.eshkulsjws"
+      "bundleIdentifier": "io.cordova.eshkulsjws",
+      "buildNumber": "2.1.63"
     },
     "android": {
+      "versionCode": 20163,
+      "targetSdkVersion": 35,
+      "compileSdkVersion": 35,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"

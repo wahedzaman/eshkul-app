@@ -26,8 +26,15 @@ class AppSession {
     AppSession.instance = this;
   }
 
+  hasRight(rightId) {
+    if (!this.rights || !Array.isArray(this.rights)) return false;
+    const strRight = String(rightId);
+    return this.rights.some(r => String(r) === strRight);
+  }
+
   get instituteId() {
-    return this.instituteCache[0]?.id ?? null;
+    // return this.instituteCache[0]?.id ?? null;
+    return 95;
   }
 
   setSession(data) {
@@ -65,7 +72,7 @@ class AppSession {
       const data = await StorageManager.getItem(Strings.STORAGE_KEYS.USER_SESSION);
       if (data) {
         this.setSession(data);
-        
+
         // Load persistent student details if profile exists
         if (data.UserType === Strings.USER_TYPES.STUDENT) {
           const studentData = await StorageManager.getItem(Strings.STORAGE_KEYS.STUDENT_DETAILS);
@@ -79,7 +86,7 @@ class AppSession {
             this.employeeAddresses = (employeeData.Addresses || []).map(a => new EmployeeAddress(a));
           }
         }
-        
+
         const sessionId = await StorageManager.getItem(Strings.STORAGE_KEYS.ACADEMIC_SESSION_ID);
         if (sessionId) {
           this.academicSessionId = sessionId;

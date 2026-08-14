@@ -14,7 +14,9 @@ export default {
     ATTENDANCE: '/api/student/AttendanceDetails',
     NOTICE: '/api/notice/listbyuser',
     TIMETABLE_STUDENT: '/api/Routine/Student',
+    TIMETABLE_EMPLOYEE: '/api/Routine/teacher',
     HOMEWORK_STUDENT: '/api/VcrDairy/GetAllforStudent',
+    HOMEWORK_TEACHER: '/api/VcrDairy',
     INSTITUTE_CODE: '/api/Cache/GetInstitutes'
   },
 };

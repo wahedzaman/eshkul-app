@@ -2,6 +2,7 @@ import NetworkManager from './NetworkManager';
 import ApiWrapper from '../constants/ApiWrapper';
 import AppSession from './AppSession';
 import Homework from '../models/Homework';
+import Strings from '../constants/Strings';
 
 class HomeworkService {
   static async fetchHomework(startDate, endDate) {
@@ -24,17 +25,28 @@ class HomeworkService {
       startDate = formatDate(startDateObj);
     }
 
+    const isStudent = AppSession.userType === Strings.USER_TYPES.STUDENT;
+
     const params = {
       startDate: startDate,
       endDate: endDate,
     };
+
+    let endpoint = ApiWrapper.ENDPOINTS.HOMEWORK_STUDENT;
+
+    if (!isStudent) {
+      endpoint = ApiWrapper.ENDPOINTS.HOMEWORK_TEACHER;
+      if (AppSession.academicSessionId) {
+        params.academicSessionId = AppSession.academicSessionId;
+      }
+    }
 
     const headers = {
       'Authorization': AppSession.token || '',
     };
 
     const response = await NetworkManager.get(
-      ApiWrapper.ENDPOINTS.HOMEWORK_STUDENT,
+      endpoint,
       params,
       headers,
       ApiWrapper.APP_API_BASE_URL

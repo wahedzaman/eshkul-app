@@ -30,23 +30,23 @@ export default function HomeScreen() {
       }
     >
 
-      {/* {AppSession.rights !== 1915 && (
+      {/* {AppSession.hasRight(1915) && (
         <BalanceCard refreshTrigger={refreshTrigger} />
       )} */}
 
-      {AppSession.rights !== 1911 && (
+      {AppSession.hasRight(1911) && (
         <AttendanceCard refreshTrigger={refreshTrigger} />
       )}
 
-      {AppSession.rights !== 1913 && (
+      {AppSession.hasRight(1913) && (
         <HomeworkCard refreshTrigger={refreshTrigger} />
       )}
 
       <NewsAndNoticeCard refreshTrigger={refreshTrigger} />
 
-      {AppSession.rights !== 1912 && (
-        <ClassRoutineCard refreshTrigger={refreshTrigger} />
-      )}
+      {/* {AppSession.hasRight(1912) && ( */}
+      <ClassRoutineCard refreshTrigger={refreshTrigger} />
+      {/* )} */}
 
 
       <AcademicCalendarCard refreshTrigger={refreshTrigger} />

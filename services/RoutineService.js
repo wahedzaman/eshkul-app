@@ -3,6 +3,8 @@ import ApiWrapper from '../constants/ApiWrapper';
 import AppSession from './AppSession';
 import Routine from '../models/Routine';
 
+import Strings from '../constants/Strings';
+
 const WEEK_DAY_IDS = {
   0: 212, // Sunday
   1: 213, // Monday
@@ -15,13 +17,31 @@ const WEEK_DAY_IDS = {
 
 class RoutineService {
   static async fetchRoutine() {
+    const isStudent = AppSession.userType === Strings.USER_TYPES.STUDENT;
+    console.log('User type:', AppSession.userType);
+    console.log('Academic session ID:', AppSession.academicSessionId);
+    console.log('Employee ID:', AppSession.employee?.Id);
+
+    let endpoint = ApiWrapper.ENDPOINTS.TIMETABLE_STUDENT;
+    const params = {};
+
+    if (!isStudent) {
+      endpoint = ApiWrapper.ENDPOINTS.TIMETABLE_EMPLOYEE;
+      if (AppSession.academicSessionId) {
+        params.academicSessionId = AppSession.academicSessionId;
+      }
+      if (AppSession.employee) {
+        params.teacherId = AppSession.employee.Id;
+      }
+    }
+
     const headers = {
       'Authorization': AppSession.token || '',
     };
 
     const response = await NetworkManager.get(
-      ApiWrapper.ENDPOINTS.TIMETABLE_STUDENT,
-      {},
+      endpoint,
+      params,
       headers,
       ApiWrapper.APP_API_BASE_URL
     );
@@ -59,7 +79,7 @@ class RoutineService {
 
   static buildScheduleForFilter(routine, filter) {
     if (!routine || !routine.RoutineDetails) return [];
-    
+
     const todayId = this.getTodayWeekDayId();
     let details = routine.RoutineDetails;
 

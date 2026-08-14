@@ -10,16 +10,20 @@ import InstituteService from './InstituteService';
 class SplashService {
   static async ensureInstituteCache() {
     if (AppSession.instituteCache.length > 0) {
+      console.log("[SplashService] has code: ", AppSession.instituteCache[0].code);
       return;
     }
 
     const stored = await StorageManager.getItem(Strings.STORAGE_KEYS.INSTITUTE_CACHE);
     if (Array.isArray(stored) && stored.length > 0) {
+      console.log("[SplashService] has stored instituteCache: ", stored);
+      AppSession.setInstituteCache(stored);
       return;
     }
 
     const result = await InstituteService.fetchInstitutes(Strings.STORAGE_KEYS.GROUP_CODE);
     if (result.success && result.data.length > 0) {
+      console.log("[SplashService] Fetched instituteCache: ", result.data);
       AppSession.setInstituteCache(result.data);
       await StorageManager.setItem(Strings.STORAGE_KEYS.INSTITUTE_CACHE, result.data);
     }

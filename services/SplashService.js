@@ -6,6 +6,7 @@ import EmployeeService from './EmployeeService';
 import AccountManager from './AccountManager';
 import CacheService from './CacheService';
 import InstituteService from './InstituteService';
+import FirebaseService from './FirebaseService';
 
 class SplashService {
   static async ensureInstituteCache() {
@@ -45,6 +46,7 @@ class SplashService {
         if (studentRes.success) {
           await CacheService.fetchAndPersistLoginCache(sessionData.Token);
           await AccountManager.migrateIfNeeded();
+          FirebaseService.initialize();
           return true;
         } else {
           await AppSession.clearSession();
@@ -55,6 +57,7 @@ class SplashService {
         if (employeeRes.success) {
           await CacheService.fetchAndPersistLoginCache(sessionData.Token);
           await AccountManager.migrateIfNeeded();
+          FirebaseService.initialize();
           return true;
         } else {
           await AppSession.clearSession();

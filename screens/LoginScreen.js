@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, Image, Platform, Modal, Activi
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
+import { CommonActions } from '@react-navigation/native';
 import AuthService from '../services/AuthService';
 import AccountManager from '../services/AccountManager';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -41,11 +42,12 @@ export default function LoginScreen({ navigation, route }) {
       setIsLoading(false);
 
       if (response.success) {
-        if (isAddAccountMode) {
-          navigation.goBack();
-        } else {
-          navigation.replace('AppContainer');
-        }
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name: 'AppContainer' }],
+          })
+        );
       } else {
         const errorMsg = response.type === 'failed' ? t('login_failed') : t('login_error');
         Alert.alert(

@@ -20,7 +20,7 @@ class RoutineService {
     const isStudent = AppSession.userType === Strings.USER_TYPES.STUDENT;
     console.log('User type:', AppSession.userType);
     console.log('Academic session ID:', AppSession.academicSessionId);
-    console.log('Employee ID:', AppSession.employee?.Id);
+    console.log('Employee ID:', AppSession.employee);
 
     let endpoint = ApiWrapper.ENDPOINTS.TIMETABLE_STUDENT;
     const params = {};
@@ -31,7 +31,7 @@ class RoutineService {
         params.academicSessionId = AppSession.academicSessionId;
       }
       if (AppSession.employee) {
-        params.teacherId = AppSession.employee.Id;
+        params.teacherId = AppSession.employee.employeeId;
       }
     }
 

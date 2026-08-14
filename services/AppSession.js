@@ -33,8 +33,8 @@ class AppSession {
   }
 
   get instituteId() {
-    // return this.instituteCache[0]?.id ?? null;
-    return 95;
+    return this.instituteCache[0]?.id ?? null;
+    // return 95;
   }
 
   setSession(data) {

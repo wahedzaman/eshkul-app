@@ -54,10 +54,14 @@ function updateAppJson(config) {
 
     if (googleServiceInfoExists) {
       appJson.expo.ios.googleServicesFile = './GoogleService-Info.plist';
+    } else {
+      delete appJson.expo.ios.googleServicesFile;
     }
 
     if (googleServicesExists) {
       appJson.expo.android.googleServicesFile = './google-services.json';
+    } else {
+      delete appJson.expo.android.googleServicesFile;
     }
   } else {
     delete appJson.expo.ios.googleServicesFile;

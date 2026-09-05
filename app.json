@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Sir John Wilson School",
-    "slug": "Eshkul",
+    "name": "CGS",
+    "slug": "CGS",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -23,14 +23,14 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "io.cordova.eshkulsjws"
+      "bundleIdentifier": "io.eshkul.cgs"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "io.cordova.eshkulsjws",
+      "package": "io.eshkul.cgs",
       "edgeToEdgeEnabled": true,
       "googleServicesFile": "./google-services.json"
     },

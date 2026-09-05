@@ -7,7 +7,8 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "apply-brand": "node scripts/apply-brand.js"
+    "apply-brand": "node scripts/apply-brand.js",
+    "build:android:release": "npx expo prebuild --clean --platform android && npx expo run:android --variant release"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "2.2.0",

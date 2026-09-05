@@ -31,8 +31,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "io.eshkul.demo.schoold",
-      "edgeToEdgeEnabled": true,
-      "googleServicesFile": "./google-services.json"
+      "edgeToEdgeEnabled": true
     },
     "web": {
       "favicon": "./assets/favicon.png"

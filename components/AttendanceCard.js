@@ -59,7 +59,7 @@ export default function AttendanceCard({ refreshTrigger }) {
       <View className="flex-row justify-between items-center mb-4">
         <Text className={`text-lg font-bold ${titleColor}`}>{t('attendance_overview')}</Text>
         <TouchableOpacity>
-          <Text className={`font-bold ${linkColor}`}>{t('view_all')}</Text>
+          {/* <Text className={`font-bold ${linkColor}`}>{t('view_all')}</Text> */}
         </TouchableOpacity>
       </View>
 

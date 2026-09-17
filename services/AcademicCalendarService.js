@@ -27,6 +27,7 @@ class AcademicCalendarService {
     if (response.success && response.data) {
       const list = Array.isArray(response.data) ? response.data : (response.data.data || []);
       const parsedEvents = list.map(item => new AcademicCalendar(item));
+      parsedEvents.sort((a, b) => new Date(a.fromDate || 0) - new Date(b.fromDate || 0));
       return { success: true, data: parsedEvents };
     }
 

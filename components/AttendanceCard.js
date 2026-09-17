@@ -126,7 +126,7 @@ export default function AttendanceCard({ refreshTrigger }) {
             </G>
           </Svg>
           <View style={{ position: 'absolute', top: 42, left: 0, right: 0, alignItems: 'center' }}>
-            <Text className="text-3xl font-bold text-navy">{percentage}%</Text>
+            <Text className="text-2xl font-bold text-navy">{percentage}%</Text>
           </View>
         </View>
 

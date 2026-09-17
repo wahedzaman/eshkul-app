@@ -56,8 +56,11 @@ const HomeworkItem = ({ subject, chapter, description, assignedDate, submissionD
         <Text className="text-green-600 font-bold">{submissionDate}</Text>
       </View>
 
-      <Text className="text-[#0f172a] font-medium mb-1">{chapter ? `${t('chapter')} ${chapter}` : ''}</Text>
-      <Text className="text-gray-600 text-sm mb-4">{description}</Text>
+      <Text className="text-[#0f172a] font-medium mb-1">{chapter ? chapter : ''}</Text>
+      <Text className="text-gray-600 text-sm mb-4">
+        <Text className="font-semibold text-[#0f172a]">{t('homework_label')} </Text>
+        {description}
+      </Text>
 
       <View className="h-[1px] bg-gray-100 mb-3" />
 
@@ -178,7 +181,7 @@ export default function HomeworkCard({ refreshTrigger }) {
         )}
       </View>
       {filteredHomeworks.length > 3 && (
-        <TouchableOpacity 
+        <TouchableOpacity
           className="border border-blue-500 rounded-full py-3 items-center mt-2"
           onPress={() => navigation.navigate('HomeworkList')}
         >

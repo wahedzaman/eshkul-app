@@ -6,7 +6,7 @@ export default {
     MULTI_ACCOUNTS: 'multi_accounts',
     ACADEMIC_SESSION_ID: 'academic_session_id',
     INSTITUTE_CACHE: 'institute_cache',
-    GROUP_CODE: 'bd.dhk.sjw',
+    GROUP_CODE: 'demo',
   },
   USER_TYPES: {
     STUDENT: 11,

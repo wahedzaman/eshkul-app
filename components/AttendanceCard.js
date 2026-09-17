@@ -4,6 +4,21 @@ import { useTranslation } from 'react-i18next';
 import Svg, { Circle, G } from 'react-native-svg';
 import AttendanceService from '../services/AttendanceService';
 
+const MONTH_KEYS = [
+  'month_january',
+  'month_february',
+  'month_march',
+  'month_april',
+  'month_may',
+  'month_june',
+  'month_july',
+  'month_august',
+  'month_september',
+  'month_october',
+  'month_november',
+  'month_december',
+];
+
 export default function AttendanceCard({ refreshTrigger }) {
   const { t } = useTranslation();
 
@@ -37,6 +52,7 @@ export default function AttendanceCard({ refreshTrigger }) {
   const todayLabel = todayStatus === 'present' ? t('present') : todayStatus === 'absent' ? t('absent') : t('late');
 
   const dateFormatter = new Intl.DateTimeFormat('en-US', { day: 'numeric', month: 'short' });
+  const currentMonth = t(MONTH_KEYS[new Date().getMonth()]);
 
   const radius = 45;
   const strokeWidth = 12;
@@ -57,7 +73,7 @@ export default function AttendanceCard({ refreshTrigger }) {
   return (
     <View className={`rounded-[32px] p-6 mb-6 shadow-sm ${cardBgColor}`}>
       <View className="flex-row justify-between items-center mb-4">
-        <Text className={`text-lg font-bold ${titleColor}`}>{t('attendance_overview')}</Text>
+        <Text className={`text-lg font-bold ${titleColor}`}>{t('attendance_of_month', { month: currentMonth })}</Text>
         <TouchableOpacity>
           {/* <Text className={`font-bold ${linkColor}`}>{t('view_all')}</Text> */}
         </TouchableOpacity>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image, ActivityIndicator, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import Animated, { FadeIn, FadeOut, LinearTransition } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
@@ -7,18 +7,8 @@ import { useNavigation } from '@react-navigation/native';
 import RoutineService from '../services/RoutineService';
 import ApiWrapper from '../constants/ApiWrapper';
 
-const FilterChip = ({ label, isActive, onPress }) => (
-  <TouchableOpacity
-    onPress={onPress}
-    className={`px-5 py-2 rounded-full mr-3 border ${isActive ? 'bg-[#0f172a] border-[#0f172a]' : 'bg-white border-gray-300'}`}
-  >
-    <Text className={`${isActive ? 'text-white' : 'text-[#0f172a]'} font-bold`}>
-      {label}
-    </Text>
-  </TouchableOpacity>
-);
 
-const RoutineItem = ({ dayName, timeStart, timeEnd, subject, room, teacher, isActive, isLast }) => (
+const RoutineItem = ({ timeStart, timeEnd, subject, room, teacher, isActive, isLast }) => (
   <Animated.View
     entering={FadeIn.duration(300)}
     exiting={FadeOut.duration(200)}
@@ -26,7 +16,6 @@ const RoutineItem = ({ dayName, timeStart, timeEnd, subject, room, teacher, isAc
     className="flex-row mb-1"
   >
     <View className="w-16 pt-1 mr-2 items-end">
-      {dayName && <Text className="text-blue-500 font-bold text-[10px] mb-0.5">{dayName}</Text>}
       <Text className="text-[#0f172a] font-bold  text-sm">{timeStart}</Text>
       <Text className="text-gray-500 text-xs">{timeEnd}</Text>
     </View>
@@ -96,7 +85,6 @@ function getTodayLabel() {
 export default function ClassRoutineCard({ refreshTrigger }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const [activeFilter, setActiveFilter] = useState('today');
   const [fullRoutine, setFullRoutine] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -113,8 +101,8 @@ export default function ClassRoutineCard({ refreshTrigger }) {
     setLoading(false);
   };
 
-  const schedule = RoutineService.buildScheduleForFilter(fullRoutine, activeFilter);
-  const activeIndex = activeFilter === 'today' ? getCurrentPeriodIndex(schedule) : -1;
+  const schedule = RoutineService.buildScheduleForFilter(fullRoutine, 'today');
+  const activeIndex = getCurrentPeriodIndex(schedule);
 
   return (
     <View className="bg-white rounded-[32px] p-6 mb-6 shadow-sm">
@@ -126,24 +114,6 @@ export default function ClassRoutineCard({ refreshTrigger }) {
         </TouchableOpacity>
       </View>
 
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-6">
-        <FilterChip
-          label={t('all')}
-          isActive={activeFilter === 'all'}
-          onPress={() => setActiveFilter('all')}
-        />
-        <FilterChip
-          label={t('today')}
-          isActive={activeFilter === 'today'}
-          onPress={() => setActiveFilter('today')}
-        />
-        <FilterChip
-          label={t('upcoming')}
-          isActive={activeFilter === 'upcoming'}
-          onPress={() => setActiveFilter('upcoming')}
-        />
-      </ScrollView>
-
       <View>
         {loading ? (
           <View className="py-8 items-center justify-center">
@@ -153,7 +123,6 @@ export default function ClassRoutineCard({ refreshTrigger }) {
           schedule.slice(0, 4).map((item, index, arr) => (
             <RoutineItem
               key={item.id}
-              dayName={activeFilter !== 'today' ? t(item.dayName.toLowerCase()) : null}
               timeStart={item.timeStart}
               timeEnd={item.timeEnd}
               subject={item.subject}
